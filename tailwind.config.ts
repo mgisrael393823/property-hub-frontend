@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -14,6 +13,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        jakarta: ["Plus Jakarta Sans", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        space: ["Space Grotesk", "monospace"],
+      },
       colors: {
         brand: {
           dark: "#1A1F2C",

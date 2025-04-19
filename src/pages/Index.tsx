@@ -30,24 +30,32 @@ const FEATURED_CREATORS = [
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-brand-dark text-white">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-brand-dark via-headers-primary to-brand-purple py-20 text-white">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* Hero Section with Glassmorphism */}
+      <section className="relative py-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-headers-primary/20 to-transparent backdrop-blur-sm" />
+        <div className="max-w-7xl mx-auto px-6 relative">
           <div className="max-w-2xl">
-            <h1 className="text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight font-jakarta">
               Find Verified Real Estate Creators Near You
             </h1>
-            <p className="text-xl mb-8 text-gray-200">
+            <p className="text-lg md:text-xl mb-8 font-inter text-gray-200">
               Connect with local photographers, videographers, and content creators to showcase your properties.
             </p>
-            <div className="flex gap-4">
-              <Button size="lg" className="bg-white text-headers-primary hover:bg-gray-100">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                size="lg"
+                className="bg-brand-purple hover:bg-brand-purple/90 text-white w-full sm:w-auto"
+              >
                 Post a Project
               </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-white/20 text-white hover:bg-white/10 backdrop-blur-sm w-full sm:w-auto"
+              >
                 Join as Creator
               </Button>
             </div>
@@ -56,10 +64,14 @@ const Index = () => {
       </section>
 
       {/* Featured Creators Section */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-headers-primary mb-2">Featured Creators</h2>
-          <p className="text-text-secondary mb-8">Discover top-rated real estate content creators in your area</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-headers-primary mb-2 font-jakarta">
+            Featured Creators
+          </h2>
+          <p className="text-text-secondary mb-8 font-inter">
+            Discover top-rated real estate content creators in your area
+          </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {FEATURED_CREATORS.map((creator) => (
