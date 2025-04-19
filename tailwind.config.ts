@@ -1,3 +1,4 @@
+
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -20,6 +21,9 @@ const config: Config = {
         heading: ['"Plus Jakarta Sans"', 'sans-serif'],
         sans: ['Inter', 'sans-serif'],
         mono: ['"Space Grotesk"', 'monospace'],
+        jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        space: ['"Space Grotesk"', 'monospace'],
       },
       colors: {
         brand: {
@@ -29,6 +33,9 @@ const config: Config = {
           surface: '#FFFFFF',
           success: '#10B981',
           error: '#EF4444',
+          dark: '#1A1F2C',
+          purple: '#6C47FF',
+          medium: '#2D1A66',
         },
         text: {
           primary: '#1F2937',
@@ -45,6 +52,25 @@ const config: Config = {
           500: '#6B7280',
           700: '#374151',
         },
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: 'hsl(var(--card))',
+        'card-foreground': 'hsl(var(--card-foreground))',
+        popover: 'hsl(var(--popover))',
+        'popover-foreground': 'hsl(var(--popover-foreground))',
+        primary: 'hsl(var(--primary))',
+        'primary-foreground': 'hsl(var(--primary-foreground))',
+        secondary: 'hsl(var(--secondary))',
+        'secondary-foreground': 'hsl(var(--secondary-foreground))',
+        muted: 'hsl(var(--muted))',
+        'muted-foreground': 'hsl(var(--muted-foreground))',
+        accent: 'hsl(var(--accent))',
+        'accent-foreground': 'hsl(var(--accent-foreground))',
+        destructive: 'hsl(var(--destructive))',
+        'destructive-foreground': 'hsl(var(--destructive-foreground))',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
       },
       borderRadius: {
         lg: '0.75rem',
