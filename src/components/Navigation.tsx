@@ -20,12 +20,22 @@ const Navigation = () => {
           <Link to="/creator-dashboard" className="text-gray-300 hover:text-white transition-colors font-inter">
             Creator Dashboard
           </Link>
-          <Button 
-            variant="default"
-            className="bg-brand-purple hover:bg-brand-purple/90 text-white whitespace-nowrap"
-          >
-            Post a Project
-          </Button>
+          <div className="flex gap-3">
+            <Button 
+              variant="outline"
+              className="border-brand-purple text-white hover:bg-brand-purple/20"
+              onClick={() => window.location.href = '/onboarding/creator'}
+            >
+              Join as Creator
+            </Button>
+            <Button 
+              variant="default"
+              className="bg-brand-purple hover:bg-brand-purple/90 text-white whitespace-nowrap"
+              onClick={() => window.location.href = '/onboarding/manager'}
+            >
+              Post a Project
+            </Button>
+          </div>
         </div>
       </div>
     </nav>

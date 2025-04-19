@@ -10,6 +10,8 @@ import ManagerDashboard from "./pages/ManagerDashboard";
 import Search from "./pages/Search";
 import CreatorProfile from "./pages/CreatorProfile";
 import NotFound from "./pages/NotFound";
+import CreatorOnboarding from "./pages/Creator/CreatorOnboarding";
+import ManagerOnboarding from "./pages/Manager/ManagerOnboarding";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
           <Route path="/manager-dashboard" element={<ManagerDashboard />} />
           <Route path="/search" element={<Search />} />
           <Route path="/creator/:id" element={<CreatorProfile />} />
+          <Route path="/onboarding/creator" element={<CreatorOnboarding />} />
+          <Route path="/onboarding/manager" element={<ManagerOnboarding />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
