@@ -1,101 +1,66 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
-export default {
-  darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
-  prefix: "",
+const config: Config = {
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: '2rem',
       screens: {
-        "2xl": "1400px",
+        xl: '1400px',
       },
     },
     extend: {
       fontFamily: {
-        jakarta: ["Plus Jakarta Sans", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
-        space: ["Space Grotesk", "monospace"],
-        heading: ["Plus Jakarta Sans", "sans-serif"],
-        sans: ["Inter", "sans-serif"],
+        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
+        mono: ['"Space Grotesk"', 'monospace'],
       },
       colors: {
         brand: {
-          dark: "#1A1F2C",
-          medium: "#6E59A5",
-          purple: "#8B5CF6",
-          primary: "#6C47FF",
-          secondary: "#EEE9FF",
-        },
-        headers: {
-          primary: "#2D1A66",
-          highlight: "#6033E0",
-          section: "#1F1F33",
-          secondary: "#3B2C80",
+          primary: '#6C47FF',
+          secondary: '#F5F3FF',
+          background: '#F9FAFB',
+          surface: '#FFFFFF',
+          success: '#10B981',
+          error: '#EF4444',
         },
         text: {
-          primary: "#1F2937",
-          secondary: "#6B7280",
-          light: "#9CA3AF",
+          primary: '#1F2937',
+          secondary: '#6B7280',
+          light: '#E5E7EB',
+          link: '#6C47FF',
         },
-        link: "#6C47FF",
         border: {
-          DEFAULT: "#E5E7EB",
+          default: '#E5E7EB',
         },
-        success: "#10B981",
-        error: "#EF4444",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        gray: {
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          500: '#6B7280',
+          700: '#374151',
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: '0.75rem',
+        xl: '1rem',
+        '2xl': '1.25rem',
+        full: '9999px',
       },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+      boxShadow: {
+        sm: '0 1px 2px rgba(0, 0, 0, 0.04)',
+        DEFAULT: '0 2px 6px rgba(0, 0, 0, 0.08)',
+        md: '0 4px 10px rgba(0, 0, 0, 0.08)',
+        lg: '0 10px 20px rgba(0, 0, 0, 0.12)',
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+  plugins: [],
+};
+
+export default config;
