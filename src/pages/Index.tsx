@@ -33,28 +33,28 @@ const Index = () => {
     <div className="min-h-screen bg-brand-dark text-white">
       <Navigation />
       
-      {/* Hero Section with Glassmorphism */}
+      {/* Hero Section with Improved Glassmorphism for Contrast */}
       <section className="relative py-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-headers-primary/20 to-transparent backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-headers-primary/40 to-transparent backdrop-blur-sm" />
         <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl glass-panel-dark p-8 rounded-xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight font-jakarta">
               Find Verified Real Estate Creators Near You
             </h1>
-            <p className="text-lg md:text-xl mb-8 font-inter text-gray-200">
+            <p className="text-lg md:text-xl mb-8 font-inter text-gray-100">
               Connect with local photographers, videographers, and content creators to showcase your properties.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg"
-                className="bg-brand-purple hover:bg-brand-purple/90 text-white w-full sm:w-auto"
+                className="bg-brand-purple hover:bg-brand-purple/90 text-white w-full sm:w-auto high-contrast-outline"
               >
                 Post a Project
               </Button>
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-white/20 text-white hover:bg-white/10 backdrop-blur-sm w-full sm:w-auto"
+                className="border-white/50 text-white hover:bg-white/20 backdrop-blur-sm w-full sm:w-auto"
               >
                 Join as Creator
               </Button>
@@ -69,7 +69,7 @@ const Index = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-headers-primary mb-2 font-jakarta">
             Featured Creators
           </h2>
-          <p className="text-text-secondary mb-8 font-inter">
+          <p className="text-text-primary mb-8 font-inter">
             Discover top-rated real estate content creators in your area
           </p>
           

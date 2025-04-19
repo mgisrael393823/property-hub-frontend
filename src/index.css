@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap');
@@ -103,6 +104,23 @@
 
   code, pre {
     @apply font-space;
+  }
+  
+  /* Accessibility improvements */
+  .text-contrast-improved {
+    @apply text-gray-200;
+  }
+  
+  .high-contrast-outline {
+    @apply border-2 border-white/60;
+  }
+  
+  .glass-panel {
+    @apply bg-white/15 backdrop-blur-md border border-white/20;
+  }
+  
+  .glass-panel-dark {
+    @apply bg-black/40 backdrop-blur-md border border-white/10;
   }
 }
 
