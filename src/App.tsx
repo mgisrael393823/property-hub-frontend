@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import CreatorOnboarding from "./pages/Creator/CreatorOnboarding";
 import ManagerOnboarding from "./pages/Manager/ManagerOnboarding";
 import NewProject from "./pages/projects/NewProject";
+import ProjectBrief from "./pages/projects/ProjectBrief";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/onboarding/creator" element={<CreatorOnboarding />} />
           <Route path="/onboarding/manager" element={<ManagerOnboarding />} />
           <Route path="/projects/new" element={<NewProject />} />
+          <Route path="/projects/:id" element={<ProjectBrief />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
