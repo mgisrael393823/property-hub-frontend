@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BookingsTab from '@/components/creator-dashboard/BookingsTab';
 import PortfolioTab from '@/components/creator-dashboard/PortfolioTab';
 import AvailabilityTab from '@/components/creator-dashboard/AvailabilityTab';
+import ApplicationsTab from '@/components/creator-dashboard/ApplicationsTab';
 
 const CreatorDashboard = () => {
   return (
@@ -18,6 +19,9 @@ const CreatorDashboard = () => {
             <TabsTrigger value="bookings" className="data-[state=active]:text-brand-primary data-[state=active]:border-b-2 data-[state=active]:border-brand-primary">
               Bookings
             </TabsTrigger>
+            <TabsTrigger value="applications" className="data-[state=active]:text-brand-primary data-[state=active]:border-b-2 data-[state=active]:border-brand-primary">
+              Applications
+            </TabsTrigger>
             <TabsTrigger value="portfolio" className="data-[state=active]:text-brand-primary data-[state=active]:border-b-2 data-[state=active]:border-brand-primary">
               Portfolio
             </TabsTrigger>
@@ -28,6 +32,10 @@ const CreatorDashboard = () => {
 
           <TabsContent value="bookings">
             <BookingsTab />
+          </TabsContent>
+
+          <TabsContent value="applications">
+            <ApplicationsTab />
           </TabsContent>
 
           <TabsContent value="portfolio">
