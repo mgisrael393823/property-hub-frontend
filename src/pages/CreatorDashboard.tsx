@@ -6,6 +6,7 @@ import BookingsTab from '@/components/creator-dashboard/BookingsTab';
 import PortfolioTab from '@/components/creator-dashboard/PortfolioTab';
 import AvailabilityTab from '@/components/creator-dashboard/AvailabilityTab';
 import ApplicationsTab from '@/components/creator-dashboard/ApplicationsTab';
+import EarningsTab from '@/components/creator-dashboard/EarningsTab';
 
 const CreatorDashboard = () => {
   return (
@@ -16,17 +17,20 @@ const CreatorDashboard = () => {
         
         <Tabs defaultValue="bookings" className="w-full">
           <TabsList className="mb-6 bg-white rounded-lg border border-gray-200">
-            <TabsTrigger value="bookings" className="data-[state=active]:text-brand-primary data-[state=active]:border-b-2 data-[state=active]:border-brand-primary">
+            <TabsTrigger value="bookings">
               Bookings
             </TabsTrigger>
-            <TabsTrigger value="applications" className="data-[state=active]:text-brand-primary data-[state=active]:border-b-2 data-[state=active]:border-brand-primary">
+            <TabsTrigger value="applications">
               Applications
             </TabsTrigger>
-            <TabsTrigger value="portfolio" className="data-[state=active]:text-brand-primary data-[state=active]:border-b-2 data-[state=active]:border-brand-primary">
+            <TabsTrigger value="portfolio">
               Portfolio
             </TabsTrigger>
-            <TabsTrigger value="availability" className="data-[state=active]:text-brand-primary data-[state=active]:border-b-2 data-[state=active]:border-brand-primary">
+            <TabsTrigger value="availability">
               Availability
+            </TabsTrigger>
+            <TabsTrigger value="earnings">
+              Earnings
             </TabsTrigger>
           </TabsList>
 
@@ -44,6 +48,10 @@ const CreatorDashboard = () => {
 
           <TabsContent value="availability">
             <AvailabilityTab />
+          </TabsContent>
+
+          <TabsContent value="earnings">
+            <EarningsTab />
           </TabsContent>
         </Tabs>
       </div>
