@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
+import NotificationsDropdown from './notifications/NotificationsDropdown';
 
 const Navigation = () => {
   return (
@@ -20,21 +21,24 @@ const Navigation = () => {
           <Link to="/creator-dashboard" className="text-text-secondary hover:text-link transition-colors font-sans">
             Creator Dashboard
           </Link>
-          <div className="flex gap-3">
-            <Button 
-              variant="outline"
-              className="border-brand-primary text-brand-primary hover:bg-brand-secondary rounded-full px-5 py-2.5 text-sm font-semibold"
-              onClick={() => window.location.href = '/onboarding/creator'}
-            >
-              Join as Creator
-            </Button>
-            <Button 
-              variant="default"
-              className="bg-brand-primary hover:bg-brand-primary/90 text-white rounded-full px-5 py-2.5 text-sm font-semibold"
-              onClick={() => window.location.href = '/onboarding/manager'}
-            >
-              Post a Project
-            </Button>
+          <div className="flex items-center gap-4">
+            <NotificationsDropdown />
+            <div className="flex gap-3">
+              <Button 
+                variant="outline"
+                className="border-brand-primary text-brand-primary hover:bg-brand-secondary rounded-full px-5 py-2.5 text-sm font-semibold"
+                onClick={() => window.location.href = '/onboarding/creator'}
+              >
+                Join as Creator
+              </Button>
+              <Button 
+                variant="default"
+                className="bg-brand-primary hover:bg-brand-primary/90 text-white rounded-full px-5 py-2.5 text-sm font-semibold"
+                onClick={() => window.location.href = '/onboarding/manager'}
+              >
+                Post a Project
+              </Button>
+            </div>
           </div>
         </div>
       </div>
