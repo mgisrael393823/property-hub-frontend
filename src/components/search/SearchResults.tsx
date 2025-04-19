@@ -10,6 +10,58 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Mock data for creators
+const mockCreators = [
+  {
+    id: "1",
+    name: "Alex Johnson",
+    location: "Los Angeles, CA",
+    services: ["Photography", "Virtual Tours"],
+    imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
+    workSamples: [
+      { url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9", type: "image" },
+      { url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c", type: "image" },
+      { url: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea", type: "image" },
+      { url: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3", type: "image" },
+    ],
+    rating: 4.9,
+    responseTime: "< 2h",
+    verified: true,
+  },
+  {
+    id: "2",
+    name: "Sofia Martinez",
+    location: "Miami, FL",
+    services: ["Videography", "Drone", "Editing"],
+    imageUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956",
+    workSamples: [
+      { url: "https://images.unsplash.com/photo-1568605114967-8130f3a36994", type: "image" },
+      { url: "https://images.unsplash.com/photo-1570129477492-45c003edd2be", type: "image" },
+      { url: "https://images.unsplash.com/photo-1554995207-c18c203602cb", type: "image" },
+      { url: "https://images.unsplash.com/photo-1523217582562-09d0def993a6", type: "image" },
+    ],
+    rating: 4.7,
+    responseTime: "< 24h",
+    verified: true,
+  },
+  {
+    id: "3",
+    name: "Sam Wilson",
+    location: "Austin, TX",
+    services: ["Photography", "Virtual Staging"],
+    imageUrl: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79",
+    workSamples: [
+      { url: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83", type: "image" },
+      { url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa", type: "image" },
+      { url: "https://images.unsplash.com/photo-1564078516393-cf04bd966897", type: "image" },
+      { url: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde", type: "image" },
+    ],
+    rating: 4.5,
+    responseTime: "< 12h",
+    verified: true,
+  },
+];
+
 // Mock data for services
 const mockServices = [
   {
