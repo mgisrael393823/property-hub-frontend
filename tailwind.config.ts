@@ -17,12 +17,16 @@ export default {
         jakarta: ["Plus Jakarta Sans", "sans-serif"],
         inter: ["Inter", "sans-serif"],
         space: ["Space Grotesk", "monospace"],
+        heading: ["Plus Jakarta Sans", "sans-serif"],
+        sans: ["Inter", "sans-serif"],
       },
       colors: {
         brand: {
           dark: "#1A1F2C",
           medium: "#6E59A5",
           purple: "#8B5CF6",
+          primary: "#6C47FF",
+          secondary: "#EEE9FF",
         },
         headers: {
           primary: "#2D1A66",
@@ -31,14 +35,16 @@ export default {
           secondary: "#3B2C80",
         },
         text: {
-          primary: "#4B5563",
+          primary: "#1F2937",
           secondary: "#6B7280",
           light: "#9CA3AF",
         },
-        link: "#5829D9",
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        link: "#6C47FF",
+        border: {
+          DEFAULT: "#E5E7EB",
+        },
+        success: "#10B981",
+        error: "#EF4444",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {

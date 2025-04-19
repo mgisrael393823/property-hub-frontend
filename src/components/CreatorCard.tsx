@@ -30,10 +30,10 @@ const CreatorCard = ({
   verified = true
 }: CreatorCardProps) => {
   return (
-    <Card className="w-full overflow-hidden hover:shadow-lg transition-all bg-white/5 backdrop-blur-sm border-white/10">
+    <Card className="w-full overflow-hidden hover:shadow-md transition-all bg-white rounded-2xl border-border">
       <div className="grid grid-cols-2 gap-1 p-2">
         {workSamples.slice(0, 4).map((sample, index) => (
-          <div key={index} className="aspect-square relative overflow-hidden rounded">
+          <div key={index} className="aspect-square relative overflow-hidden rounded-lg">
             <img 
               src={sample.url} 
               alt={`Work sample ${index + 1}`}
@@ -46,28 +46,28 @@ const CreatorCard = ({
             <img 
               src={imageUrl} 
               alt={name}
-              className="w-full h-full object-cover rounded"
+              className="w-full h-full object-cover rounded-lg"
             />
           </div>
         )}
       </div>
       
-      <CardContent className="p-4">
+      <CardContent className="p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold text-white mb-1">{name}</h3>
-            <p className="text-sm text-gray-300 mb-2">{location}</p>
+            <h3 className="text-lg font-bold text-text-primary font-heading mb-1">{name}</h3>
+            <p className="text-sm text-text-secondary mb-2 font-sans">{location}</p>
             <div className="flex items-center gap-2 mb-3">
               <div className="flex items-center">
                 <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                <span className="text-sm text-gray-200">{rating}</span>
+                <span className="text-sm text-text-primary">{rating}</span>
               </div>
-              <span className="text-sm text-gray-300">•</span>
-              <span className="text-sm text-gray-300">{responseTime}</span>
+              <span className="text-sm text-text-secondary">•</span>
+              <span className="text-sm text-text-secondary">{responseTime}</span>
               {verified && (
                 <>
-                  <span className="text-sm text-gray-300">•</span>
-                  <Badge variant="secondary" className="bg-brand-purple/20 text-brand-purple">
+                  <span className="text-sm text-text-secondary">•</span>
+                  <Badge variant="outline" className="bg-brand-secondary text-brand-primary text-xs px-3 py-1 rounded-full font-medium">
                     Verified
                   </Badge>
                 </>
@@ -77,7 +77,7 @@ const CreatorCard = ({
           <img 
             src={imageUrl} 
             alt={name}
-            className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
+            className="w-12 h-12 rounded-full object-cover border-2 border-border"
           />
         </div>
         
@@ -86,7 +86,7 @@ const CreatorCard = ({
             <Badge 
               key={service}
               variant="secondary" 
-              className="bg-[#2D1A66] text-gray-200 hover:bg-brand-medium"
+              className="bg-gray-100 text-text-secondary text-xs px-3 py-1 rounded-md"
             >
               {service}
             </Badge>
@@ -98,13 +98,13 @@ const CreatorCard = ({
         <Link to={`/creator/${id}`} className="flex-1">
           <Button 
             variant="outline" 
-            className="w-full border-brand-purple text-gray-200 hover:bg-brand-purple/30"
+            className="w-full border-brand-primary text-brand-primary hover:bg-brand-secondary/50 rounded-full font-semibold"
           >
             View Profile
           </Button>
         </Link>
         <Button 
-          className="flex-1 bg-brand-purple text-white hover:bg-brand-purple/90"
+          className="flex-1 bg-brand-primary text-white hover:bg-brand-primary/90 rounded-full font-semibold"
         >
           Request Booking
         </Button>

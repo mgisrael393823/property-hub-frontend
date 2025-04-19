@@ -90,14 +90,14 @@ export function SearchResults({ view }: SearchResultsProps) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-white">
+        <h2 className="text-xl font-bold text-text-primary font-heading">
           {view === "creators" 
             ? `${mockCreators.length} Creators Available`
             : "Browse Services"
           }
         </h2>
         <Select value={sortValue} onValueChange={setSortValue}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[180px] bg-white border-border text-text-secondary">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
@@ -127,10 +127,10 @@ export function SearchResults({ view }: SearchResultsProps) {
       {((view === "creators" && mockCreators.length === 0) || 
         (view === "services" && mockServices.length === 0)) && (
         <div className="text-center py-12">
-          <h3 className="text-xl font-semibold text-gray-200 mb-2">
+          <h3 className="text-xl font-semibold text-text-primary mb-2 font-heading">
             No {view === "creators" ? "creators" : "services"} found
           </h3>
-          <p className="text-gray-400">
+          <p className="text-text-secondary font-sans">
             Try adjusting your filters to see more results
           </p>
         </div>

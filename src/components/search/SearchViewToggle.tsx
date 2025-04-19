@@ -14,18 +14,18 @@ export function SearchViewToggle({ view, onViewChange }: SearchViewToggleProps) 
       type="single"
       value={view}
       onValueChange={(value) => value && onViewChange(value as "creators" | "services")}
-      className="border rounded-lg bg-white/5 p-1 border-white/10"
+      className="border rounded-full bg-white p-1 border-border"
     >
       <ToggleGroupItem 
         value="creators" 
-        className="flex items-center gap-2 text-gray-200 data-[state=on]:bg-brand-purple data-[state=on]:text-white hover:text-white"
+        className="flex items-center gap-2 text-text-secondary rounded-full data-[state=on]:bg-brand-primary data-[state=on]:text-white hover:text-text-primary"
       >
         <Users className="h-4 w-4" />
         Find Creators
       </ToggleGroupItem>
       <ToggleGroupItem 
         value="services" 
-        className="flex items-center gap-2 text-gray-200 data-[state=on]:bg-brand-purple data-[state=on]:text-white hover:text-white"
+        className="flex items-center gap-2 text-text-secondary rounded-full data-[state=on]:bg-brand-primary data-[state=on]:text-white hover:text-text-primary"
       >
         <Grid2X2 className="h-4 w-4" />
         Find Services
