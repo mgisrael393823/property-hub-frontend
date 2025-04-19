@@ -1,4 +1,3 @@
-
 import { useState } from "react"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
@@ -16,7 +15,7 @@ import { CalendarDays } from "lucide-react"
 
 const services = [
   "Photography",
-  "Videography",
+  "Videography", 
   "Drone Footage",
   "Virtual Tours",
   "Social Media Content"
@@ -49,21 +48,21 @@ export function SearchFilters({ view }: SearchFiltersProps) {
       {view === "creators" ? (
         <>
           <div>
-            <Label htmlFor="zipcode">Location</Label>
+            <Label htmlFor="zipcode" className="text-gray-200">Location</Label>
             <Input 
               id="zipcode" 
               placeholder="Enter ZIP code" 
-              className="mt-1.5"
+              className="mt-1.5 bg-white/5 border-white/10 text-gray-200"
             />
           </div>
 
           <div>
-            <Label>Services</Label>
+            <Label className="text-gray-200">Services</Label>
             <div className="mt-1.5 space-y-2">
               {services.map((service) => (
                 <div key={service} className="flex items-center space-x-2">
                   <Checkbox id={service} />
-                  <Label htmlFor={service} className="text-sm text-gray-200">
+                  <Label htmlFor={service} className="text-gray-300">
                     {service}
                   </Label>
                 </div>
@@ -72,7 +71,7 @@ export function SearchFilters({ view }: SearchFiltersProps) {
           </div>
 
           <div>
-            <Label>Price Range</Label>
+            <Label className="text-gray-200">Price Range</Label>
             <div className="mt-4 px-2">
               <Slider
                 defaultValue={[500]}
@@ -89,10 +88,13 @@ export function SearchFilters({ view }: SearchFiltersProps) {
           </div>
 
           <div>
-            <Label>Availability</Label>
+            <Label className="text-gray-200">Availability</Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full mt-1.5 justify-between">
+                <Button 
+                  variant="outline" 
+                  className="w-full mt-1.5 justify-between text-gray-200 border-white/10 bg-white/5 hover:bg-white/10"
+                >
                   {date ? date.toLocaleDateString() : "Select date"}
                   <CalendarDays className="ml-2 h-4 w-4" />
                 </Button>
@@ -103,23 +105,23 @@ export function SearchFilters({ view }: SearchFiltersProps) {
                   selected={date}
                   onSelect={setDate}
                   initialFocus
-                  className="pointer-events-auto"
+                  className="bg-brand-dark border-white/10"
                 />
               </PopoverContent>
             </Popover>
           </div>
 
           <div>
-            <Label>Quality Filters</Label>
+            <Label className="text-gray-200">Quality Filters</Label>
             <div className="space-y-3 mt-1.5">
               <div className="flex items-center justify-between">
-                <Label htmlFor="verified" className="text-sm text-gray-200">
+                <Label htmlFor="verified" className="text-gray-300">
                   Verified Only
                 </Label>
                 <Switch id="verified" />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="toprated" className="text-sm text-gray-200">
+                <Label htmlFor="toprated" className="text-gray-300">
                   4.5+ Rating
                 </Label>
                 <Switch id="toprated" />

@@ -30,7 +30,7 @@ const Navigation = () => {
             </Button>
             <Button 
               variant="default"
-              className="bg-brand-purple hover:bg-brand-purple/90 text-white whitespace-nowrap"
+              className="bg-brand-purple hover:bg-brand-purple/90 text-white"
               onClick={() => window.location.href = '/onboarding/manager'}
             >
               Post a Project

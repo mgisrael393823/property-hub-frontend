@@ -86,7 +86,7 @@ const CreatorCard = ({
             <Badge 
               key={service}
               variant="secondary" 
-              className="bg-white/10"
+              className="bg-[#2D1A66] text-gray-200 hover:bg-brand-medium"
             >
               {service}
             </Badge>
@@ -98,13 +98,13 @@ const CreatorCard = ({
         <Link to={`/creator/${id}`} className="flex-1">
           <Button 
             variant="outline" 
-            className="w-full border-brand-purple text-white hover:bg-brand-purple/30"
+            className="w-full border-brand-purple text-gray-200 hover:bg-brand-purple/30"
           >
             View Profile
           </Button>
         </Link>
         <Button 
-          className="flex-1 bg-brand-purple hover:bg-brand-purple/90"
+          className="flex-1 bg-brand-purple text-white hover:bg-brand-purple/90"
         >
           Request Booking
         </Button>
