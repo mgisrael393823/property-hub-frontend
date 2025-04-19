@@ -1,21 +1,25 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import CreatorDashboard from "./pages/CreatorDashboard";
-import ManagerDashboard from "./pages/ManagerDashboard";
-import Search from "./pages/Search";
-import CreatorProfile from "./pages/CreatorProfile";
-import BookingRequest from "./pages/Booking/BookingRequest";
-import NotFound from "./pages/NotFound";
-import CreatorOnboarding from "./pages/Creator/CreatorOnboarding";
-import ManagerOnboarding from "./pages/Manager/ManagerOnboarding";
-import NewProject from "./pages/projects/NewProject";
-import ProjectBrief from "./pages/projects/ProjectBrief";
-import ProjectApplicants from "./pages/manager-dashboard/ProjectApplicants";
-import AdminDashboard from "./pages/AdminDashboard";
+import { ROUTES } from "@/lib/constants";
+
+// App pages
+import Index from "@/app/index";
+import CreatorDashboard from "@/app/creator-dashboard";
+import ManagerDashboard from "@/app/manager-dashboard";
+import Search from "@/app/search";
+import CreatorProfile from "@/app/creator/[id]";
+import BookingRequest from "@/app/booking/[creatorId]";
+import NotFound from "@/pages/NotFound";
+import CreatorOnboarding from "@/app/creator/onboarding";
+import ManagerOnboarding from "@/app/manager/onboarding";
+import NewProject from "@/app/projects/new";
+import ProjectBrief from "@/app/projects/[id]";
+import ProjectApplicants from "@/app/projects/[id]/applicants";
+import AdminDashboard from "@/app/admin-dashboard";
 
 const queryClient = new QueryClient();
 
@@ -26,19 +30,19 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/creator-dashboard" element={<CreatorDashboard />} />
-          <Route path="/manager-dashboard" element={<ManagerDashboard />} />
+          <Route path={ROUTES.HOME} element={<Index />} />
+          <Route path={ROUTES.CREATOR_DASHBOARD} element={<CreatorDashboard />} />
+          <Route path={ROUTES.MANAGER_DASHBOARD} element={<ManagerDashboard />} />
           <Route path="/manager-dashboard/projects/:projectId/applicants" element={<ProjectApplicants />} />
-          <Route path="/search" element={<Search />} />
+          <Route path={ROUTES.SEARCH} element={<Search />} />
           <Route path="/creator/:id" element={<CreatorProfile />} />
           <Route path="/booking/:creatorId" element={<BookingRequest />} />
-          <Route path="/onboarding/creator" element={<CreatorOnboarding />} />
-          <Route path="/onboarding/manager" element={<ManagerOnboarding />} />
-          <Route path="/projects/new" element={<NewProject />} />
+          <Route path={ROUTES.CREATOR_ONBOARDING} element={<CreatorOnboarding />} />
+          <Route path={ROUTES.MANAGER_ONBOARDING} element={<ManagerOnboarding />} />
+          <Route path={ROUTES.NEW_PROJECT} element={<NewProject />} />
           <Route path="/projects/:id" element={<ProjectBrief />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path={ROUTES.ADMIN_DASHBOARD} element={<AdminDashboard />} />
+          <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

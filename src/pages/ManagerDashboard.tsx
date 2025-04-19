@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Navigation from '@/components/Navigation';
+import Navigation from '@/components/layout/Navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectsTab from '@/components/manager-dashboard/ProjectsTab';
 import CreatorsTab from '@/components/manager-dashboard/CreatorsTab';

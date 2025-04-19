@@ -1,0 +1,46 @@
+
+@layer components {
+  .heading-1 {
+    @apply text-4xl font-bold font-heading;
+  }
+  
+  .heading-2 {
+    @apply text-3xl font-bold font-heading;
+  }
+  
+  .heading-3 {
+    @apply text-2xl font-bold font-heading;
+  }
+  
+  .heading-4 {
+    @apply text-xl font-semibold font-heading;
+  }
+  
+  .title {
+    @apply text-lg font-semibold font-heading;
+  }
+  
+  .subtitle {
+    @apply text-base font-medium text-muted-foreground;
+  }
+  
+  .body-large {
+    @apply text-base font-sans;
+  }
+  
+  .body {
+    @apply text-sm font-sans;
+  }
+  
+  .body-small {
+    @apply text-xs font-sans;
+  }
+  
+  .caption {
+    @apply text-xs text-muted-foreground;
+  }
+  
+  .code {
+    @apply font-space bg-muted px-1.5 py-0.5 rounded text-sm;
+  }
+}
