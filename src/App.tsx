@@ -14,6 +14,7 @@ import CreatorOnboarding from "./pages/Creator/CreatorOnboarding";
 import ManagerOnboarding from "./pages/Manager/ManagerOnboarding";
 import NewProject from "./pages/projects/NewProject";
 import ProjectBrief from "./pages/projects/ProjectBrief";
+import ProjectApplicants from "./pages/manager-dashboard/ProjectApplicants";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/creator-dashboard" element={<CreatorDashboard />} />
           <Route path="/manager-dashboard" element={<ManagerDashboard />} />
+          <Route path="/manager-dashboard/projects/:projectId/applicants" element={<ProjectApplicants />} />
           <Route path="/search" element={<Search />} />
           <Route path="/creator/:id" element={<CreatorProfile />} />
           <Route path="/booking/:creatorId" element={<BookingRequest />} />
