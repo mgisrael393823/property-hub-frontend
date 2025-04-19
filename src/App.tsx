@@ -15,6 +15,7 @@ import ManagerOnboarding from "./pages/Manager/ManagerOnboarding";
 import NewProject from "./pages/projects/NewProject";
 import ProjectBrief from "./pages/projects/ProjectBrief";
 import ProjectApplicants from "./pages/manager-dashboard/ProjectApplicants";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/onboarding/manager" element={<ManagerOnboarding />} />
           <Route path="/projects/new" element={<NewProject />} />
           <Route path="/projects/:id" element={<ProjectBrief />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
