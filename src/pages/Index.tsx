@@ -3,6 +3,13 @@ import Navigation from '@/components/Navigation';
 import CreatorCard from '@/components/CreatorCard';
 import { Button } from '@/components/ui/button';
 import { Search, CalendarCheck, Download } from 'lucide-react';
+import WhyCreatorsSection from '@/components/homepage/WhyCreatorsSection';
+import WhyTeamsSection from '@/components/homepage/WhyTeamsSection';
+import TestimonialsSection from '@/components/homepage/TestimonialsSection';
+import ContentShowcase from '@/components/homepage/ContentShowcase';
+import LogosBar from '@/components/homepage/LogosBar';
+import CtaSection from '@/components/homepage/CtaSection';
+import Footer from '@/components/homepage/Footer';
 
 const FEATURED_CREATORS = [
   {
@@ -114,6 +121,14 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <WhyCreatorsSection />
+      <WhyTeamsSection />
+      <TestimonialsSection />
+      <ContentShowcase />
+      <LogosBar />
+      <CtaSection />
+      <Footer />
     </div>
   );
 };
