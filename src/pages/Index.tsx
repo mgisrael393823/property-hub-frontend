@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navigation from '@/components/Navigation';
 import CreatorCard from '@/components/CreatorCard';
@@ -70,7 +71,7 @@ const Index = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-white/50 text-white hover:bg-white/20 backdrop-blur-sm w-full sm:w-auto"
+                className="border-brand-primary text-brand-primary hover:bg-brand-secondary/20 w-full sm:w-auto"
               >
                 Join as Creator
               </Button>
