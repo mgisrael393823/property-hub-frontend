@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +12,7 @@ import BookingRequest from "./pages/Booking/BookingRequest";
 import NotFound from "./pages/NotFound";
 import CreatorOnboarding from "./pages/Creator/CreatorOnboarding";
 import ManagerOnboarding from "./pages/Manager/ManagerOnboarding";
+import NewProject from "./pages/projects/NewProject";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +31,7 @@ const App = () => (
           <Route path="/booking/:creatorId" element={<BookingRequest />} />
           <Route path="/onboarding/creator" element={<CreatorOnboarding />} />
           <Route path="/onboarding/manager" element={<ManagerOnboarding />} />
+          <Route path="/projects/new" element={<NewProject />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
