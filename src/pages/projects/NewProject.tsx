@@ -1,13 +1,14 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { CalendarIcon, FileUp, Upload } from "lucide-react";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { projectSchema } from "@/lib/validations";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { CalendarIcon, Upload } from "lucide-react"
-import { format } from "date-fns"
-import { useNavigate } from "react-router-dom"
-import { useToast } from "@/hooks/use-toast"
-
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,24 +17,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import Navigation from "@/components/Navigation"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import Navigation from "@/components/Navigation";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
+} from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const contentTypes = [
   { id: "photography", label: "Photography" },
@@ -41,40 +43,74 @@ const contentTypes = [
   { id: "videoTour", label: "Video Tour" },
   { id: "virtualStaging", label: "Virtual Staging" },
   { id: "reelsSocial", label: "Reels/Social Content" },
-] as const
+] as const;
 
 const budgetRanges = [
   { value: "500-1000", label: "$500 - $1,000" },
   { value: "1000-2000", label: "$1,000 - $2,000" },
   { value: "2000-5000", label: "$2,000 - $5,000" },
   { value: "5000+", label: "$5,000+" },
-] as const
-
-const formSchema = z.object({
-  title: z.string().min(2, "Project title must be at least 2 characters"),
-  address: z.string().min(5, "Please enter a valid property address"),
-  contentTypes: z.array(z.string()).min(1, "Select at least one content type"),
-  description: z.string().min(10, "Please provide more details about the project"),
-  budget: z.string({ required_error: "Please select a budget range" }),
-  timeline: z.date({ required_error: "Please select a target date" }),
-})
+] as const;
 
 const NewProject = () => {
-  const { toast } = useToast()
-  const navigate = useNavigate()
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      contentTypes: [],
-    },
-  })
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Success!",
-      description: "Your project has been posted.",
-    })
-    navigate("/manager-dashboard")
+  // Initialize form with validation schema
+  const form = useForm<z.infer<typeof projectSchema>>({
+    resolver: zodResolver(projectSchema),
+    defaultValues: {
+      title: "",
+      address: "",
+      contentTypes: [],
+      description: "",
+    },
+    mode: "onChange", // Validate on change
+  });
+
+  // Keep track of form errors for UI feedback
+  const formErrors = form.formState.errors;
+  const hasErrors = Object.keys(formErrors).length > 0;
+
+  // Simulate file upload
+  const handleFileUpload = () => {
+    // Mock file upload
+    const newFile = `file-${Date.now()}.jpg`;
+    setUploadedFiles([...uploadedFiles, newFile]);
+  };
+
+  // Form submission handler
+  async function onSubmit(values: z.infer<typeof projectSchema>) {
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      console.log("Form values:", values);
+      console.log("Attachments:", uploadedFiles);
+      
+      // Add artificial delay to simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      
+      // Show success message
+      toast({
+        title: "Success!",
+        description: "Your project has been posted.",
+      });
+      
+      // Navigate after success
+      setTimeout(() => navigate("/manager-dashboard"), 500);
+    } catch (error) {
+      // Show error message
+      toast({
+        title: "Error",
+        description: "There was a problem posting your project. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -98,6 +134,9 @@ const NewProject = () => {
                     <FormControl>
                       <Input placeholder="e.g., Luxury Apartment Photography" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      A clear, descriptive title will attract the right creators
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -112,45 +151,66 @@ const NewProject = () => {
                     <FormControl>
                       <Input placeholder="Enter the property's full address" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      The complete address where the project will take place
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
               <div className="space-y-3">
-                <FormLabel className="font-heading text-lg font-semibold">Content Needed</FormLabel>
-                {contentTypes.map((type) => (
-                  <FormField
-                    key={type.id}
-                    control={form.control}
-                    name="contentTypes"
-                    render={({ field }) => (
-                      <FormItem
-                        key={type.id}
-                        className="flex flex-row items-start space-x-3 space-y-0"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(type.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, type.id])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== type.id
-                                    )
-                                  )
-                            }}
+                <FormField
+                  control={form.control}
+                  name="contentTypes"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel className="font-heading text-lg font-semibold">Content Needed</FormLabel>
+                      <FormDescription>
+                        Select all the content types you need for this project
+                      </FormDescription>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                        {contentTypes.map((type) => (
+                          <FormField
+                            key={type.id}
+                            control={form.control}
+                            name="contentTypes"
+                            render={({ field }) => (
+                              <FormItem
+                                key={type.id}
+                                className="flex flex-row items-start space-x-3 space-y-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(type.id)}
+                                    onCheckedChange={(checked) => {
+                                      const currentValue = [...(field.value || [])];
+                                      if (checked) {
+                                        // Add to array if not present
+                                        if (!currentValue.includes(type.id)) {
+                                          field.onChange([...currentValue, type.id]);
+                                        }
+                                      } else {
+                                        // Remove from array if present
+                                        field.onChange(
+                                          currentValue.filter((value) => value !== type.id)
+                                        );
+                                      }
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  {type.label}
+                                </FormLabel>
+                              </FormItem>
+                            )}
                           />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {type.label}
-                        </FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                ))}
-                <FormMessage />
+                        ))}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <FormField
@@ -166,6 +226,9 @@ const NewProject = () => {
                         {...field}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Provide details about your project needs, goals, and any specific requirements
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -191,6 +254,9 @@ const NewProject = () => {
                         ))}
                       </SelectContent>
                     </Select>
+                    <FormDescription>
+                      Choose a budget range that matches your expectations
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -231,6 +297,9 @@ const NewProject = () => {
                         />
                       </PopoverContent>
                     </Popover>
+                    <FormDescription>
+                      When would you like this project completed?
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -238,25 +307,80 @@ const NewProject = () => {
 
               <div className="space-y-3">
                 <FormLabel className="font-heading text-lg font-semibold">Attachments (Optional)</FormLabel>
-                <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center">
+                <FormDescription>
+                  Upload reference images, brand guidelines, or other helpful documents
+                </FormDescription>
+                <div 
+                  onClick={handleFileUpload}
+                  className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-50 transition-colors"
+                >
                   <Upload className="mx-auto h-12 w-12 text-gray-400" />
                   <div className="mt-2">
-                    <Button type="button" variant="outline">Upload Files</Button>
+                    <Button type="button" variant="outline" onClick={(e) => {
+                      e.stopPropagation();
+                      handleFileUpload();
+                    }}>
+                      <FileUp className="mr-2 h-4 w-4" />
+                      Upload Files
+                    </Button>
                   </div>
                   <p className="mt-2 text-sm text-gray-500">Drag and drop or click to upload</p>
                 </div>
+                
+                {uploadedFiles.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Uploaded Files:</p>
+                    <div className="space-y-2">
+                      {uploadedFiles.map((file, index) => (
+                        <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-md">
+                          <span className="text-sm text-gray-600">{file}</span>
+                          <Button 
+                            type="button" 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-red-500 h-8 px-2"
+                            onClick={() => {
+                              setUploadedFiles(uploadedFiles.filter((_, i) => i !== index));
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <Button type="submit" className="w-full md:w-auto">
-                Post Project
+              {hasErrors && (
+                <Alert variant="destructive">
+                  <AlertTitle>Form Incomplete</AlertTitle>
+                  <AlertDescription>
+                    Please fix the highlighted errors before submitting.
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              <Button 
+                type="submit" 
+                className="w-full md:w-auto"
+                disabled={isSubmitting || hasErrors}
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Posting Project...
+                  </>
+                ) : (
+                  "Post Project"
+                )}
               </Button>
             </form>
           </Form>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NewProject
-
+export default NewProject;

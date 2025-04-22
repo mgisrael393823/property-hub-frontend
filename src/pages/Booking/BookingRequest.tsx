@@ -1,12 +1,12 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { format } from 'date-fns';
-import { ArrowLeft, Calendar, Check, Clock, MapPin, Star } from 'lucide-react';
+import { ArrowLeft, Calendar, Check, Clock, Info, MapPin, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { bookingSchema } from '@/lib/validations';
 
 import {
   Form,
@@ -15,6 +15,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,18 +29,10 @@ import {
 } from '@/components/ui/popover';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-const formSchema = z.object({
-  projectTitle: z.string().min(1, 'Project title is required'),
-  propertyAddress: z.string().min(1, 'Property address is required'),
-  preferredDate: z.date({
-    required_error: 'Please select a date',
-  }),
-  services: z.array(z.string()).min(1, 'Please select at least one service'),
-  notes: z.string().optional(),
-});
-
+// Services offered
 const services = [
   { id: 'photos', label: 'Real Estate Photography' },
   { id: 'virtual-tour', label: 'Virtual Tour' },
@@ -63,25 +56,49 @@ export default function BookingRequest() {
   const { creatorId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  // Initialize form with validation schema
+  const form = useForm<z.infer<typeof bookingSchema>>({
+    resolver: zodResolver(bookingSchema),
     defaultValues: {
       projectTitle: '',
       propertyAddress: '',
       services: [],
       notes: '',
     },
+    mode: 'onChange', // Validate on change for immediate user feedback
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log('Form data:', data);
-    toast({
-      title: "Success!",
-      description: "Your booking request has been sent.",
-    });
-    // In a real app, this would submit to an API
-    setTimeout(() => navigate(`/creator/${creatorId}`), 2000);
+  // Handle form submission
+  const onSubmit = async (data: z.infer<typeof bookingSchema>) => {
+    setIsSubmitting(true);
+    
+    try {
+      // In a real app, this would submit to an API
+      console.log('Form data:', data);
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Show success message
+      toast({
+        title: "Success!",
+        description: "Your booking request has been sent.",
+      });
+      
+      // Redirect after successful submission
+      setTimeout(() => navigate(`/creator/${creatorId}`), 1500);
+    } catch (error) {
+      // Handle error
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your booking request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -119,147 +136,194 @@ export default function BookingRequest() {
           {/* Main Form */}
           <div className="lg:col-span-2">
             <Card className="p-6">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="projectTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Project Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g., Beach House Photography" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+              <CardHeader className="px-0 pt-0">
+                <CardTitle>Booking Request</CardTitle>
+                <Alert className="mt-4">
+                  <Info className="h-4 w-4" />
+                  <AlertTitle>Important</AlertTitle>
+                  <AlertDescription>
+                    This will send a booking request to the creator. They'll review your request and confirm availability.
+                  </AlertDescription>
+                </Alert>
+              </CardHeader>
+              <CardContent className="px-0 pb-0">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="projectTitle"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Project Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g., Beach House Photography" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            Give your project a descriptive title
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="propertyAddress"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Property Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter the full property address" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="propertyAddress"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Property Address</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter the full property address" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            Please provide the complete address where the shoot will take place
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="preferredDate"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <FormLabel>Preferred Date</FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                className={`w-full justify-start text-left font-normal ${!field.value && "text-muted-foreground"}`}
-                              >
-                                <Calendar className="mr-2 h-4 w-4" />
-                                {field.value ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0">
-                            <CalendarComponent
-                              mode="single"
-                              selected={field.value}
-                              onSelect={field.onChange}
-                              disabled={(date) =>
-                                date < new Date()
-                              }
-                              initialFocus
-                              className="rounded-md pointer-events-auto"
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="preferredDate"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>Preferred Date</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant="outline"
+                                  className={`w-full justify-start text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                                >
+                                  <Calendar className="mr-2 h-4 w-4" />
+                                  {field.value ? (
+                                    format(field.value, "PPP")
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <CalendarComponent
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date < new Date(new Date().setHours(0, 0, 0, 0))
+                                }
+                                initialFocus
+                                className="rounded-md pointer-events-auto"
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormDescription>
+                            Select your preferred date for the shoot (must be a future date)
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="services"
-                    render={() => (
-                      <FormItem>
-                        <div className="mb-4">
-                          <FormLabel>Services Needed</FormLabel>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {services.map((service) => (
-                            <FormField
-                              key={service.id}
-                              control={form.control}
-                              name="services"
-                              render={({ field }) => {
-                                return (
-                                  <FormItem
-                                    key={service.id}
-                                    className="flex flex-row items-start space-x-3 space-y-0"
-                                  >
-                                    <FormControl>
-                                      <Checkbox
-                                        checked={field.value?.includes(service.id)}
-                                        onCheckedChange={(checked) => {
-                                          return checked
-                                            ? field.onChange([...field.value, service.id])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                  (value) => value !== service.id
+                    <FormField
+                      control={form.control}
+                      name="services"
+                      render={() => (
+                        <FormItem>
+                          <div className="mb-2">
+                            <FormLabel>Services Needed</FormLabel>
+                            <FormDescription>
+                              Select all services you'd like to book
+                            </FormDescription>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {services.map((service) => (
+                              <FormField
+                                key={service.id}
+                                control={form.control}
+                                name="services"
+                                render={({ field }) => {
+                                  return (
+                                    <FormItem
+                                      key={service.id}
+                                      className="flex flex-row items-start space-x-3 space-y-0"
+                                    >
+                                      <FormControl>
+                                        <Checkbox
+                                          checked={field.value?.includes(service.id)}
+                                          onCheckedChange={(checked) => {
+                                            return checked
+                                              ? field.onChange([...field.value, service.id])
+                                              : field.onChange(
+                                                  field.value?.filter(
+                                                    (value) => value !== service.id
+                                                  )
                                                 )
-                                              )
-                                        }}
-                                      />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      {service.label}
-                                    </FormLabel>
-                                  </FormItem>
-                                )
-                              }}
+                                          }}
+                                        />
+                                      </FormControl>
+                                      <FormLabel className="font-normal">
+                                        {service.label}
+                                      </FormLabel>
+                                    </FormItem>
+                                  )
+                                }}
+                              />
+                            ))}
+                          </div>
+                          <FormMessage className="mt-2" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="notes"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Additional Notes</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Any specific requirements or details about the project?"
+                              className="resize-none min-h-[120px]"
+                              {...field}
                             />
-                          ))}
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          </FormControl>
+                          <FormDescription>
+                            Share any specific requirements or extra details the creator should know
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="notes"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Additional Notes</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Any specific requirements or details about the project?"
-                            className="resize-none"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-brand-primary hover:bg-brand-primary/90"
+                      disabled={isSubmitting || !form.formState.isValid}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          Sending Request...
+                        </>
+                      ) : (
+                        "Send Booking Request"
+                      )}
+                    </Button>
+                    
+                    {Object.keys(form.formState.errors).length > 0 && (
+                      <Alert variant="destructive" className="mt-4">
+                        <AlertTitle>Form Incomplete</AlertTitle>
+                        <AlertDescription>
+                          Please fix the highlighted errors before submitting.
+                        </AlertDescription>
+                      </Alert>
                     )}
-                  />
-
-                  <Button type="submit" className="w-full bg-brand-primary hover:bg-brand-primary/90">
-                    Send Booking Request
-                  </Button>
-                </form>
-              </Form>
+                  </form>
+                </Form>
+              </CardContent>
             </Card>
           </div>
 
