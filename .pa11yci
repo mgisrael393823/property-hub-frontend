@@ -1,0 +1,18 @@
+{
+  "defaults": {
+    "timeout": 30000,
+    "wait": 1000,
+    "standard": "WCAG2AA",
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox"]
+    }
+  },
+  "urls": [
+    "http://localhost:5173/",
+    "http://localhost:5173/search",
+    "http://localhost:5173/creator/1",
+    "http://localhost:5173/creator-dashboard",
+    "http://localhost:5173/manager-dashboard",
+    "http://localhost:5173/projects/new"
+  ]
+}
