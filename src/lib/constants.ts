@@ -1,21 +1,37 @@
-
 // Routes
 export const ROUTES = {
+  // Public routes
   HOME: "/",
   SEARCH: "/search",
   CREATOR: "/creator",
   CREATOR_PROFILE: "/creator/:id",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  
+  // Booking routes
   BOOKING: "/booking",
   BOOKING_REQUEST: "/booking/:creatorId",
+  
+  // Project routes
   PROJECTS: "/projects",
   NEW_PROJECT: "/projects/new",
   PROJECT_BRIEF: "/projects/:id",
   PROJECT_APPLICANTS: "/manager-dashboard/projects/:projectId/applicants",
+  
+  // Dashboard routes
   CREATOR_DASHBOARD: "/creator-dashboard",
   MANAGER_DASHBOARD: "/manager-dashboard",
   ADMIN_DASHBOARD: "/admin-dashboard",
+  
+  // Onboarding routes
   CREATOR_ONBOARDING: "/onboarding/creator",
   MANAGER_ONBOARDING: "/onboarding/manager",
+  
+  // User routes
+  PROFILE: "/profile",
+  SETTINGS: "/settings",
+  
+  // Error routes
   NOT_FOUND: "*"
 };
 
@@ -65,3 +81,16 @@ export const BOOKING_SERVICES = [
   { id: "floor-plan", label: "Floor Plan" },
   { id: "twilight", label: "Twilight Shots" },
 ];
+
+// User roles
+export const USER_ROLES = [
+  { value: "creator", label: "Creator" },
+  { value: "manager", label: "Property Manager" },
+  { value: "admin", label: "Administrator" },
+];
+
+// Authentication constants
+export const AUTH = {
+  TOKEN_KEY: "zero_vacancy_auth_token",
+  USER_KEY: "zero_vacancy_user",
+};
