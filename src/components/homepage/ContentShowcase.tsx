@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/carousel";
 
 const ContentCard = ({ image, category, title }) => (
-  <div className="relative group overflow-hidden rounded-xl">
+  <article className="relative group overflow-hidden rounded-xl">
     <img
       src={image}
       alt={title}
@@ -22,7 +22,7 @@ const ContentCard = ({ image, category, title }) => (
         <h4 className="text-white font-bold font-jakarta">{title}</h4>
       </div>
     </div>
-  </div>
+  </article>
 );
 
 const ContentShowcase = () => {
@@ -45,12 +45,12 @@ const ContentShowcase = () => {
   ];
 
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-20 px-6 bg-white" aria-labelledby="featured-content-heading">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-headers-primary mb-4 text-center font-jakarta">
+        <h2 id="featured-content-heading" className="text-3xl font-bold text-gray-800 mb-4 text-center font-jakarta">
           Featured Content
         </h2>
-        <p className="text-text-primary text-center mb-12 max-w-2xl mx-auto font-inter">
+        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto font-inter">
           Explore the amazing work created by our verified professionals.
         </p>
         <Carousel

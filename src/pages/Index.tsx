@@ -38,54 +38,58 @@ const FEATURED_CREATORS = [
 
 const HowItWorksCard = ({ icon: Icon, title, description }) => (
   <div className="bg-white p-6 rounded-xl shadow-sm flex flex-col items-center text-center space-y-4 transform transition-all hover:scale-105 hover:shadow-md">
-    <div className="bg-brand-purple/10 p-4 rounded-full">
+    <div className="bg-brand-purple/10 p-4 rounded-full" aria-hidden="true">
       <Icon className="text-brand-purple" size={48} strokeWidth={1.5} />
     </div>
-    <h3 className="text-xl font-bold font-jakarta text-headers-primary">{title}</h3>
-    <p className="text-text-primary font-inter">{description}</p>
+    <h3 className="text-xl font-bold font-jakarta text-gray-800">{title}</h3>
+    <p className="text-gray-600 font-inter">{description}</p>
   </div>
 );
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-brand-dark text-white">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-brand-purple focus:left-4 focus:top-4 focus:text-sm focus:rounded-md">
+        Skip to main content
+      </a>
       <Navigation />
       
-      <section className="relative py-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-headers-primary/40 to-transparent backdrop-blur-sm" />
-        <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="max-w-2xl glass-panel-dark p-8 rounded-xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight font-jakarta">
-              Find Verified Real Estate Creators Near You
-            </h1>
-            <p className="text-lg md:text-xl mb-8 font-inter text-gray-100">
-              Connect with local photographers, videographers, and content creators to showcase your properties.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg"
-                className="bg-brand-purple hover:bg-brand-purple/90 text-white w-full sm:w-auto high-contrast-outline"
-              >
-                Post a Project
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="border-brand-primary text-brand-primary hover:bg-brand-secondary/20 w-full sm:w-auto"
-              >
-                Join as Creator
-              </Button>
+      <main id="main-content">
+        <section className="relative py-20" aria-labelledby="hero-heading">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-headers-primary/40 to-transparent backdrop-blur-sm" />
+          <div className="max-w-7xl mx-auto px-6 relative">
+            <div className="max-w-2xl glass-panel-dark p-8 rounded-xl">
+              <h1 id="hero-heading" className="text-4xl md:text-5xl font-bold mb-6 leading-tight font-jakarta">
+                Find Verified Real Estate Creators Near You
+              </h1>
+              <p className="text-lg md:text-xl mb-8 font-inter text-gray-100">
+                Connect with local photographers, videographers, and content creators to showcase your properties.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg"
+                  className="bg-brand-purple hover:bg-brand-purple/90 text-white w-full sm:w-auto high-contrast-outline"
+                >
+                  Post a Project
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="border-brand-primary text-brand-primary hover:bg-brand-secondary/20 w-full sm:w-auto"
+                >
+                  Join as Creator
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-20 px-6 bg-white">
+      <section className="py-20 px-6 bg-white" aria-labelledby="featured-creators-heading">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-headers-primary mb-2 font-jakarta">
+          <h2 id="featured-creators-heading" className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 font-jakarta">
             Featured Creators
           </h2>
-          <p className="text-text-primary mb-8 font-inter">
+          <p className="text-gray-600 mb-8 font-inter">
             Discover top-rated real estate content creators in your area
           </p>
           
@@ -97,9 +101,9 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6 bg-gray-50" aria-labelledby="how-it-works-heading">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-headers-primary mb-12 text-center font-jakarta">
+          <h2 id="how-it-works-heading" className="text-3xl font-bold text-gray-800 mb-12 text-center font-jakarta">
             How ZeroVacancy Works
           </h2>
           
@@ -129,6 +133,7 @@ const Index = () => {
       <ContentShowcase />
       <LogosBar />
       <CtaSection />
+      </main>
       <Footer />
     </div>
   );
