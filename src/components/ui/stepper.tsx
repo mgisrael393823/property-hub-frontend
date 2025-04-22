@@ -26,6 +26,15 @@ export const Stepper = ({ steps, currentStep, onStepClick }: StepperProps) => {
                 { "opacity-50": !isCompleted && !isCurrent }
               )}
               onClick={() => isClickable && onStepClick(index)}
+              onKeyDown={(e) => {
+                if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
+                  e.preventDefault();
+                  onStepClick(index);
+                }
+              }}
+              role={isClickable ? "button" : undefined}
+              tabIndex={isClickable ? 0 : undefined}
+              aria-current={isCurrent ? "step" : undefined}
             >
               <div className="flex items-center justify-center">
                 <div 

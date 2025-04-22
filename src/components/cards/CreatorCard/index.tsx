@@ -45,18 +45,18 @@ const CreatorCard = ({
       <CardContent className="p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-lg font-bold text-text-primary font-heading mb-1">{name}</h3>
-            <p className="text-sm text-text-secondary mb-2 font-sans">{location}</p>
+            <h3 className="text-lg font-bold text-gray-800 font-heading mb-1">{name}</h3>
+            <p className="text-sm text-gray-600 mb-2 font-sans">{location}</p>
             <div className="flex items-center gap-2 mb-3">
               <div className="flex items-center">
-                <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                <span className="text-sm text-text-primary">{rating}</span>
+                <Star className="h-4 w-4 text-yellow-600 mr-1" />
+                <span className="text-sm text-gray-800">{rating}</span>
               </div>
-              <span className="text-sm text-text-secondary">•</span>
-              <span className="text-sm text-text-secondary">{responseTime}</span>
+              <span className="text-sm text-gray-600">•</span>
+              <span className="text-sm text-gray-600">{responseTime}</span>
               {verified && (
                 <>
-                  <span className="text-sm text-text-secondary">•</span>
+                  <span className="text-sm text-gray-600">•</span>
                   <Badge variant="outline" className="bg-brand-secondary text-brand-primary text-xs px-3 py-1 rounded-full font-medium">
                     Verified
                   </Badge>
@@ -76,7 +76,7 @@ const CreatorCard = ({
             <Badge 
               key={service}
               variant="secondary" 
-              className="bg-gray-100 text-text-secondary text-xs px-3 py-1 rounded-md"
+              className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-md"
             >
               {service}
             </Badge>
@@ -93,12 +93,13 @@ const CreatorCard = ({
             View Profile
           </Button>
         </Link>
-        <Button 
-          className="flex-1 bg-brand-primary text-white hover:bg-brand-primary/90 rounded-full font-semibold"
-          onClick={() => window.location.href = `${ROUTES.BOOKING}/${id}`}
-        >
-          Request Booking
-        </Button>
+        <Link to={`${ROUTES.BOOKING}/${id}`} className="flex-1">
+          <Button 
+            className="w-full bg-brand-primary text-white hover:bg-brand-primary/90 rounded-full font-semibold"
+          >
+            Request Booking
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

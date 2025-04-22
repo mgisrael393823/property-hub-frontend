@@ -38,10 +38,16 @@ const NotificationsDropdown = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="relative inline-flex items-center justify-center">
+      <DropdownMenuTrigger 
+        className="relative inline-flex items-center justify-center"
+        aria-label={hasUnread ? "Notifications (unread)" : "Notifications"}
+      >
         <Bell className="w-5 h-5 text-gray-600 hover:text-gray-900" />
         {hasUnread && (
-          <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" />
+          <span 
+            className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" 
+            aria-hidden="true"
+          />
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
