@@ -32,6 +32,7 @@ export const ROUTES = {
   SETTINGS: "/settings",
   
   // Error routes
+  ERROR_TEST: "/error-test",
   NOT_FOUND: "*"
 };
 

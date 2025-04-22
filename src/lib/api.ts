@@ -10,6 +10,7 @@ import {
   MOCK_PAYMENTS,
   MOCK_NOTIFICATIONS
 } from './mockData';
+import { AppError, ErrorType, handleError } from './error/errorHandler';
 
 // Base API URL from environment variables
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
@@ -18,16 +19,8 @@ const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_DATA === 'true';
 const MOCK_API_DELAY = parseInt(import.meta.env.VITE_MOCK_API_DELAY || '500');
 const AUTH_TOKEN_KEY = import.meta.env.VITE_AUTH_TOKEN_KEY || 'zero_vacancy_auth_token';
 
-// Error handling
-class ApiError extends Error {
-  status: number;
-  
-  constructor(message: string, status: number) {
-    super(message);
-    this.name = 'ApiError';
-    this.status = status;
-  }
-}
+// Use our standardized AppError class instead of a custom ApiError
+// This enhances the error with additional context and standardized handling
 
 // Helper to simulate API delay for development
 const mockDelay = () => new Promise(resolve => setTimeout(resolve, MOCK_API_DELAY));
@@ -72,7 +65,22 @@ async function apiRequest<T>(
     
     clearTimeout(timeoutId);
     
-    const data = await response.json();
+    // Handle non-JSON responses
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      // Handle non-JSON responses like text, images, etc.
+      const text = await response.text();
+      try {
+        // Try to parse as JSON anyway in case content-type is wrong
+        data = JSON.parse(text);
+      } catch {
+        // If it's not JSON, use the text as is
+        data = { message: text };
+      }
+    }
     
     if (!response.ok) {
       // Handle 401 Unauthorized specifically
@@ -85,22 +93,53 @@ async function apiRequest<T>(
         if (!window.location.pathname.includes('/login')) {
           window.location.href = '/login';
         }
+        
+        throw AppError.auth(data.message || 'Authentication failed');
       }
       
-      throw new ApiError(data.message || 'An error occurred', response.status);
+      if (response.status === 404) {
+        throw AppError.notFound(data.message || 'Resource not found');
+      }
+      
+      if (response.status === 403) {
+        throw AppError.permission(data.message || 'Permission denied');
+      }
+      
+      if (response.status === 400) {
+        throw AppError.validation(data.message || 'Validation error', data.errors || {});
+      }
+      
+      // Generic API error for other status codes
+      throw AppError.api(
+        data.message || 'An error occurred', 
+        response.status,
+        { endpoint, status: response.status, data }
+      );
     }
     
     return data;
   } catch (error) {
-    if (error instanceof ApiError) {
+    // If it's already an AppError, just rethrow it
+    if (error instanceof AppError) {
       throw error;
     }
     
+    // Handle specific error types
     if (error.name === 'AbortError') {
-      throw new ApiError('Request timeout', 408);
+      throw AppError.api('Request timeout', 408, { endpoint });
     }
     
-    throw new ApiError(error.message || 'Network error', 500);
+    // Handle fetch errors (like CORS, network issues, etc.)
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw AppError.network(`Network error when accessing ${endpoint}: ${error.message}`);
+    }
+    
+    // Generic error handling
+    throw AppError.api(
+      error.message || 'Unknown API error', 
+      500, 
+      { endpoint, error: String(error) }
+    );
   }
 }
 
@@ -294,11 +333,27 @@ async function handleMockRequest<T>(
   
   // Simulate error responses for testing
   if (endpoint.includes('error')) {
-    throw new ApiError('Simulated API error', 500);
+    if (endpoint.includes('auth')) {
+      throw AppError.auth('Simulated authentication error');
+    } else if (endpoint.includes('permission')) {
+      throw AppError.permission('Simulated permission error');
+    } else if (endpoint.includes('validation')) {
+      throw AppError.validation('Simulated validation error', {
+        field1: 'Field 1 error message',
+        field2: 'Field 2 error message'
+      });
+    } else if (endpoint.includes('network')) {
+      throw AppError.network('Simulated network error');
+    } else {
+      throw AppError.api('Simulated API error', 500, { 
+        endpoint, 
+        simulatedError: true 
+      });
+    }
   }
   
   if (!mockResponse) {
-    throw new ApiError('Not found', 404);
+    throw AppError.notFound(`Resource not found: ${endpoint}`);
   }
   
   return mockResponse as T;
@@ -414,20 +469,8 @@ export const api = {
 
 // Error handling middleware
 export function handleApiError(error: unknown): void {
-  if (error instanceof ApiError) {
-    toast({
-      title: 'Error',
-      description: error.message,
-      variant: 'destructive',
-    });
-  } else {
-    toast({
-      title: 'Unexpected Error',
-      description: 'An unexpected error occurred. Please try again.',
-      variant: 'destructive',
-    });
-    console.error(error);
-  }
+  // Use our centralized error handler
+  handleError(error, 'An API error occurred. Please try again.');
 }
 
 export default api;
