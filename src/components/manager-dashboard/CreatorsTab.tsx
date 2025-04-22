@@ -2,7 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, RefreshCw } from "lucide-react";
+import { useAsyncData } from "@/hooks/use-async-data";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/empty-state";
 
 // Mock data for creators
 const creators = [
@@ -26,10 +29,96 @@ const creators = [
   }
 ];
 
+// Simulated creator card skeleton component
+const CreatorCardSkeleton = () => (
+  <Card>
+    <CardContent className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 gap-4">
+      <div className="flex items-center gap-4">
+        <Skeleton className="w-12 h-12 rounded-full" />
+        <div>
+          <Skeleton className="h-5 w-32 mb-2" />
+          <Skeleton className="h-4 w-24 mb-2" />
+          <div className="flex items-center gap-2 mt-1">
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-4 w-40" />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2 items-center">
+        <Skeleton className="h-6 w-24" />
+        <Skeleton className="h-6 w-20" />
+      </div>
+
+      <div className="flex gap-2 mt-4 sm:mt-0">
+        <Skeleton className="h-9 w-24" />
+        <Skeleton className="h-9 w-24" />
+      </div>
+    </CardContent>
+  </Card>
+);
+
 const CreatorsTab = () => {
+  // Simulated delay for loading demonstration (remove in production)
+  const simulateDelay = () => new Promise(resolve => setTimeout(resolve, 1500));
+  
+  // Fetch creators data
+  const fetchCreators = async () => {
+    await simulateDelay(); // Remove in production
+    
+    // In a real app, this would be: return api.creators.getAll();
+    return creators;
+  };
+  
+  // Use our custom hook to handle loading, error states and data fetching
+  const { data, loading, error, refetch } = useAsyncData(
+    fetchCreators,
+    { errorFallback: [] }
+  );
+  
+  // Show loading skeleton
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(2)].map((_, index) => (
+          <CreatorCardSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+  
+  // Show error state
+  if (error) {
+    return (
+      <EmptyState
+        type="error"
+        title="Error loading creators"
+        description="We couldn't load your list of creators. Please try again."
+        action={{
+          label: "Retry",
+          onClick: refetch,
+          icon: <RefreshCw className="h-4 w-4 mr-2" />,
+        }}
+      />
+    );
+  }
+  
+  // Get the data (will be empty array if there was an error)
+  const creatorData = data || [];
+  
+  if (creatorData.length === 0) {
+    return (
+      <EmptyState
+        type="empty"
+        title="No creators yet"
+        description="You haven't worked with any creators yet."
+      />
+    );
+  }
+
   return (
     <div className="space-y-4">
-      {creators.map((creator) => (
+      {creatorData.map((creator) => (
         <Card key={creator.id}>
           <CardContent className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 gap-4">
             <div className="flex items-center gap-4">

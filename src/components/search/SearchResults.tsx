@@ -1,8 +1,11 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CreatorCard from "@/components/CreatorCard";
 import { ServiceCard } from "./ServiceCard";
 import { useMobile } from "@/hooks/use-mobile";
+import { SearchResultsSkeleton } from "@/components/skeletons";
+import { useAsyncData } from "@/hooks/use-async-data";
+import { api } from "@/lib/api";
 import {
   Select,
   SelectContent,
@@ -11,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ArrowDownAZ, X, ArrowUpDown } from "lucide-react";
+import { ArrowDownAZ, X, ArrowUpDown, RefreshCw } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +23,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import { EmptyState } from "@/components/ui/empty-state";
 
 // Mock data for creators
 const mockCreators = [
@@ -104,14 +108,58 @@ interface SearchResultsProps {
 export function SearchResults({ view }: SearchResultsProps) {
   const [sortValue, setSortValue] = useState("rating");
   const isMobile = useMobile('sm');
-  const isTablet = useMobile('md');
+  
+  // Simulated delay for loading demonstration (remove in production)
+  const simulateDelay = () => new Promise(resolve => setTimeout(resolve, 1500));
+  
+  // Fetch data based on view type
+  const fetchData = async () => {
+    await simulateDelay(); // Remove in production
+    
+    if (view === "creators") {
+      // In a real app, this would be: return api.creators.search({ sort: sortValue });
+      return mockCreators;
+    } else {
+      // In a real app, this would be: return api.services.getAll();
+      return mockServices;
+    }
+  };
+  
+  // Use our custom hook to handle loading, error states and data fetching
+  const { data, loading, error, refetch } = useAsyncData(
+    fetchData,
+    { dependencies: [view, sortValue] }
+  );
+  
+  // Determine what to display based on loading/error/data states
+  if (loading) {
+    return <SearchResultsSkeleton view={view} />;
+  }
+  
+  if (error) {
+    return (
+      <EmptyState
+        type="error"
+        title="Error loading results"
+        description="We couldn't load the search results. Please try again."
+        action={{
+          label: "Retry",
+          onClick: refetch,
+          icon: <RefreshCw className="h-4 w-4 mr-2" />,
+        }}
+      />
+    );
+  }
+  
+  const items = data || (view === "creators" ? mockCreators : mockServices);
+  const itemCount = items.length;
   
   return (
     <div>
       <div className="flex justify-between items-center mb-4 sm:mb-6 flex-wrap gap-3">
         <h2 className="text-lg sm:text-xl font-bold text-text-primary font-heading">
           {view === "creators" 
-            ? `${mockCreators.length} Creators Available`
+            ? `${itemCount} Creators Available`
             : "Browse Services"
           }
         </h2>
@@ -162,32 +210,28 @@ export function SearchResults({ view }: SearchResultsProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {view === "creators" ? (
-          mockCreators.map((creator) => (
-            <CreatorCard key={creator.id} {...creator} />
-          ))
-        ) : (
-          mockServices.map((service) => (
-            <ServiceCard
-              key={service.id}
-              {...service}
-              onExplore={() => console.log("Explore service:", service.id)}
-            />
-          ))
-        )}
-      </div>
-
-      {((view === "creators" && mockCreators.length === 0) || 
-        (view === "services" && mockServices.length === 0)) && (
-        <div className="text-center py-8 sm:py-12">
-          <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-2 font-heading">
-            No {view === "creators" ? "creators" : "services"} found
-          </h3>
-          <p className="text-sm sm:text-base text-text-secondary font-sans">
-            Try adjusting your filters to see more results
-          </p>
+      {itemCount > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {view === "creators" ? (
+            items.map((creator: any) => (
+              <CreatorCard key={creator.id} {...creator} />
+            ))
+          ) : (
+            items.map((service: any) => (
+              <ServiceCard
+                key={service.id}
+                {...service}
+                onExplore={() => console.log("Explore service:", service.id)}
+              />
+            ))
+          )}
         </div>
+      ) : (
+        <EmptyState
+          type="no-results"
+          title={`No ${view === "creators" ? "creators" : "services"} found`}
+          description="Try adjusting your filters to see more results"
+        />
       )}
     </div>
   );

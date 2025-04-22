@@ -7,8 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, MapPin, Check, Camera, Award, Calendar as CalendarIcon } from 'lucide-react';
+import { Star, Clock, MapPin, Check, Camera, Award, Calendar as CalendarIcon, RefreshCw } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ProfileHeaderSkeleton, PortfolioItemSkeleton } from '@/components/skeletons';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAsyncData } from '@/hooks/use-async-data';
+import { EmptyState } from '@/components/ui/empty-state';
 
 // Mock data for demonstration
 const mockCreator = {
@@ -115,12 +119,171 @@ const mockCreator = {
   }
 };
 
+// Simulated creator fetch function
+const fetchCreator = async (creatorId: string) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  
+  // In a real app, this would be an API call
+  // For now, just return mock data
+  return mockCreator;
+};
+
 const CreatorProfile = () => {
   const { id } = useParams();
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(new Date());
   
-  // In a real app, you would fetch creator data based on the ID
-  const creator = mockCreator;
+  // Use our custom hook to handle loading, error states and data fetching
+  const { data: creator, loading, error, refetch } = useAsyncData(
+    () => fetchCreator(id || '1'),
+    { dependencies: [id] }
+  );
+
+  // Show loading skeleton
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        
+        {/* Hero Section Skeleton */}
+        <div className="relative">
+          <Skeleton className="h-64 sm:h-80 w-full" />
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative -mt-24 sm:-mt-32 pb-8">
+              <div className="flex flex-col sm:flex-row sm:items-end gap-6">
+                <Skeleton className="h-28 w-28 rounded-full" />
+                
+                <div className="flex-1 bg-white/90 backdrop-blur-sm rounded-xl p-5 shadow-sm">
+                  <ProfileHeaderSkeleton />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Content Skeleton */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              {/* Tabs skeleton */}
+              <div className="flex gap-2 mb-6">
+                {[...Array(3)].map((_, i) => (
+                  <Skeleton key={i} className="h-10 w-24" />
+                ))}
+              </div>
+              
+              {/* Content card skeleton */}
+              <Card className="p-6 bg-white rounded-2xl border-border">
+                <Skeleton className="h-7 w-40 mb-4" />
+                <Skeleton className="h-4 w-full mb-3" />
+                <Skeleton className="h-4 w-full mb-3" />
+                <Skeleton className="h-4 w-3/4 mb-6" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div>
+                    <Skeleton className="h-6 w-32 mb-3" />
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4 mr-2" />
+                      <Skeleton className="h-4 w-48" />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Skeleton className="h-6 w-32 mb-3" />
+                    <div className="space-y-2">
+                      {[...Array(4)].map((_, idx) => (
+                        <div key={idx} className="flex items-start">
+                          <Skeleton className="h-4 w-4 mr-2 mt-1" />
+                          <Skeleton className="h-4 w-40" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                <Skeleton className="h-6 w-36 mb-4" />
+                <div className="bg-gray-50 p-4 rounded-xl">
+                  <Skeleton className="h-5 w-44 mb-2" />
+                  <Skeleton className="h-4 w-64 mb-6" />
+                  <Skeleton className="h-[240px] w-full rounded-md" />
+                </div>
+              </Card>
+              
+              {/* Portfolio tab skeleton */}
+              <div className="hidden">
+                <Card className="p-6 bg-white rounded-2xl border-border">
+                  <Skeleton className="h-7 w-40 mb-4" />
+                  <PortfolioItemSkeleton />
+                </Card>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Pricing card skeleton */}
+              <Card className="p-6 bg-white rounded-2xl border-border shadow-sm">
+                <Skeleton className="h-7 w-24 mb-4" />
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <Skeleton className="h-5 w-24" />
+                        <Skeleton className="h-6 w-16" />
+                      </div>
+                      <Skeleton className="h-4 w-full mb-3" />
+                      <div className="space-y-2 mb-4">
+                        {[...Array(4)].map((_, j) => (
+                          <div key={j} className="flex items-start">
+                            <Skeleton className="h-4 w-4 mr-2 mt-0.5" />
+                            <Skeleton className="h-4 w-32" />
+                          </div>
+                        ))}
+                      </div>
+                      <Skeleton className="h-9 w-full rounded-full" />
+                    </div>
+                  ))}
+                </div>
+              </Card>
+              
+              {/* Specialties card skeleton */}
+              <Card className="p-6 bg-white rounded-2xl border-border shadow-sm">
+                <Skeleton className="h-7 w-32 mb-4" />
+                <div className="space-y-3">
+                  {[...Array(3)].map((_, idx) => (
+                    <div key={idx} className="flex items-center">
+                      <Skeleton className="h-5 w-5 mr-3" />
+                      <Skeleton className="h-5 w-40" />
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error || !creator) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <EmptyState
+            type="error"
+            title="Error loading creator profile"
+            description="We couldn't load this creator's profile. Please try again."
+            action={{
+              label: "Retry",
+              onClick: refetch,
+              icon: <RefreshCw className="h-4 w-4 mr-2" />,
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
