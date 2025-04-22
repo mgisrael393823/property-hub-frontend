@@ -2,6 +2,7 @@
 import { useState } from "react";
 import CreatorCard from "@/components/CreatorCard";
 import { ServiceCard } from "./ServiceCard";
+import { useMobile } from "@/hooks/use-mobile";
 import {
   Select,
   SelectContent,
@@ -9,6 +10,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { ArrowDownAZ, X, ArrowUpDown } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 // Mock data for creators
 const mockCreators = [
@@ -80,35 +91,78 @@ const mockServices = [
   },
 ];
 
+const sortOptions = [
+  { value: "rating", label: "Top Rated" },
+  { value: "response", label: "Fastest Response" },
+  { value: "price", label: "Lowest Price" },
+];
+
 interface SearchResultsProps {
   view: "creators" | "services";
 }
 
 export function SearchResults({ view }: SearchResultsProps) {
   const [sortValue, setSortValue] = useState("rating");
+  const isMobile = useMobile('sm');
+  const isTablet = useMobile('md');
   
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-text-primary font-heading">
+      <div className="flex justify-between items-center mb-4 sm:mb-6 flex-wrap gap-3">
+        <h2 className="text-lg sm:text-xl font-bold text-text-primary font-heading">
           {view === "creators" 
             ? `${mockCreators.length} Creators Available`
             : "Browse Services"
           }
         </h2>
-        <Select value={sortValue} onValueChange={setSortValue}>
-          <SelectTrigger className="w-[180px] bg-white border-border text-text-secondary">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="rating">Top Rated</SelectItem>
-            <SelectItem value="response">Fastest Response</SelectItem>
-            <SelectItem value="price">Lowest Price</SelectItem>
-          </SelectContent>
-        </Select>
+        
+        {isMobile ? (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="px-3">
+                <ArrowUpDown className="h-4 w-4 mr-2" />
+                Sort
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Sort Results</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-2 py-4">
+                {sortOptions.map((option) => (
+                  <Button
+                    key={option.value}
+                    variant={sortValue === option.value ? "default" : "outline"}
+                    className="w-full justify-start"
+                    onClick={() => setSortValue(option.value)}
+                  >
+                    {option.label}
+                    {sortValue === option.value && (
+                      <ArrowDownAZ className="ml-auto h-4 w-4" />
+                    )}
+                  </Button>
+                ))}
+              </div>
+              <DialogClose asChild>
+                <Button className="w-full">Apply</Button>
+              </DialogClose>
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Select value={sortValue} onValueChange={setSortValue}>
+            <SelectTrigger className="w-[180px] bg-white border-border text-text-secondary">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              {sortOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {view === "creators" ? (
           mockCreators.map((creator) => (
             <CreatorCard key={creator.id} {...creator} />
@@ -126,11 +180,11 @@ export function SearchResults({ view }: SearchResultsProps) {
 
       {((view === "creators" && mockCreators.length === 0) || 
         (view === "services" && mockServices.length === 0)) && (
-        <div className="text-center py-12">
-          <h3 className="text-xl font-semibold text-text-primary mb-2 font-heading">
+        <div className="text-center py-8 sm:py-12">
+          <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-2 font-heading">
             No {view === "creators" ? "creators" : "services"} found
           </h3>
-          <p className="text-text-secondary font-sans">
+          <p className="text-sm sm:text-base text-text-secondary font-sans">
             Try adjusting your filters to see more results
           </p>
         </div>
