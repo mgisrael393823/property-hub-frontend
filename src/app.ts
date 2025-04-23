@@ -1,10 +1,21 @@
 import express from 'express';
-import { MOCK_PROJECTS, MOCK_APPLICANTS } from './lib/mockData';
+import { MOCK_CREATORS, MOCK_PROJECTS, MOCK_APPLICANTS } from './lib/mockData';
 const app = express();
 
 // -- API route stubs for integration tests --
-app.get('/creators', (_req, res) => res.json([]));
-app.get('/creators/:id', (_req, res) => res.sendStatus(404));
+// Creators routes
+app.get('/creators', (_req, res) => {
+  res.json(MOCK_CREATORS);
+});
+
+app.get('/creators/:id', (req, res) => {
+  const creator = MOCK_CREATORS.find(c => c.id === req.params.id);
+  if (creator) {
+    res.json(creator);
+  } else {
+    res.sendStatus(404);
+  }
+});
 
 app.get('/projects', (_req, res) => {
   res.json(MOCK_PROJECTS);

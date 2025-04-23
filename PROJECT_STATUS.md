@@ -41,7 +41,7 @@
 | Task | Description | Difficulty | Dependencies |
 |------|-------------|------------|--------------|
 | ~~Authentication~~ | ~~Implement user authentication and roles~~ | ~~High~~ | ~~Backend API~~ |
-| Creator Profiles API | Connect creator profiles to backend | Medium | Authentication |
+| ~~Creator Profiles API~~ | ~~Connect creator profiles to backend~~ | ~~Medium~~ | ~~Authentication~~ |
 | Project Management API | Save and retrieve projects from backend | Medium | Authentication |
 | Application System | Connect application process to backend | Medium | Creator and Project APIs |
 | Booking System | Connect booking form to backend | Medium | Creator API |
