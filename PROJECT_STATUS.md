@@ -25,7 +25,7 @@
 
 | Feature | Description | Status | Assigned To |
 |---------|-------------|--------|------------|
-| Unit Tests | Add tests for critical components | In Progress (60%) | Claude |
+| Unit Tests | Add tests for critical components | In Progress (70%) | Claude |
 
 ## 🔴 Pending Tasks (Priority Order)
 
@@ -84,5 +84,10 @@
   - Tests for Card component and its subcomponents
   - Tests for SearchResults component with various states and view modes
   - Tests for Navigation layout component with authentication states
+  - Tests for Dialog component with open/close functionality
+- ✅ Fixed test warnings and errors:
+  - Wrapped state updates in act() to prevent React test warnings
+  - Fixed async test patterns for more reliable tests
+  - Added trailing newlines to files for proper EOF formatting
 - Next: Implement tests for remaining UI components and page components
 - Plan for backend integration starting with Creator Profiles API
