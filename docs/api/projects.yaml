@@ -42,6 +42,11 @@ components:
           type: string
         title:
           type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, archived]
       required:
         - id
         - title

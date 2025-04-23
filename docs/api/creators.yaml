@@ -42,6 +42,13 @@ components:
           type: string
         name:
           type: string
+        email:
+          type: string
+          format: email
+        avatarUrl:
+          type: string
+          format: uri
       required:
         - id
         - name
+        - email
