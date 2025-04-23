@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { AccessibleCard } from './AccessibleCard';
+import { vi } from 'vitest';
 
 // Add the custom matcher
 expect.extend(toHaveNoViolations);
@@ -14,9 +15,9 @@ describe('AccessibleCard', () => {
     imageUrl: 'https://example.com/image.jpg',
     imageAlt: 'A descriptive alt text for the image',
     tags: ['Photography', 'Virtual Tours'],
-    onClick: jest.fn(),
-    onSave: jest.fn(),
-    onContact: jest.fn(),
+    onClick: vi.fn(),
+    onSave: vi.fn(),
+    onContact: vi.fn(),
   };
 
   it('should render correctly with all props', () => {
@@ -38,7 +39,9 @@ describe('AccessibleCard', () => {
     render(<AccessibleCard {...mockProps} />);
     
     // Find the clickable area (div with role="button")
-    const clickableArea = screen.getByRole('button', { name: /Test Card Title This is a test card description/i });
+    const clickableArea = screen.getByRole('button', { 
+      name: 'Test Card Title This is a test card description' 
+    });
     fireEvent.click(clickableArea);
     
     expect(mockProps.onClick).toHaveBeenCalledTimes(1);
@@ -48,15 +51,21 @@ describe('AccessibleCard', () => {
     render(<AccessibleCard {...mockProps} />);
     
     // Find the clickable area
-    const clickableArea = screen.getByRole('button', { name: /Test Card Title This is a test card description/i });
+    const clickableArea = screen.getByRole('button', { 
+      name: 'Test Card Title This is a test card description' 
+    });
     
+    // Clear the spy before testing Enter key
+    mockProps.onClick.mockClear();
     // Test Enter key
     fireEvent.keyDown(clickableArea, { key: 'Enter' });
     expect(mockProps.onClick).toHaveBeenCalledTimes(1);
     
+    // Clear the spy before testing Space key
+    mockProps.onClick.mockClear();
     // Test Space key
     fireEvent.keyDown(clickableArea, { key: ' ' });
-    expect(mockProps.onClick).toHaveBeenCalledTimes(2);
+    expect(mockProps.onClick).toHaveBeenCalledTimes(1);
   });
 
   it('should show as saved when isSaved is true', () => {
@@ -78,7 +87,9 @@ describe('AccessibleCard', () => {
     render(<AccessibleCard {...mockProps} />);
     
     // Check that the clickable area has proper aria-labelledby
-    const clickableArea = screen.getByRole('button');
+    const clickableArea = screen.getByRole('button', {
+      name: 'Test Card Title This is a test card description'
+    });
     expect(clickableArea).toHaveAttribute('aria-labelledby', 'card-title-test-card-1 card-description-test-card-1');
     
     // Check that the buttons have proper aria-labels
@@ -91,13 +102,17 @@ describe('AccessibleCard', () => {
     const propsWithoutClick = { ...mockProps };
     delete propsWithoutClick.onClick;
     
-    render(<AccessibleCard {...propsWithoutClick} />);
+    const { queryByRole } = render(<AccessibleCard {...propsWithoutClick} />);
     
-    // Should not have role="button"
-    expect(screen.queryByRole('button', { name: /Test Card Title/i })).not.toBeInTheDocument();
+    // Should not have role="button" for the container
+    expect(
+      queryByRole('button', {
+        name: 'Test Card Title This is a test card description'
+      })
+    ).not.toBeInTheDocument();
     
     // But the actual buttons should still be there
-    expect(screen.getByRole('button', { name: 'Save to your collection' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Contact about Test Card Title' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Save to your collection')).toBeInTheDocument();
+    expect(screen.getByLabelText('Contact about Test Card Title')).toBeInTheDocument();
   });
 });

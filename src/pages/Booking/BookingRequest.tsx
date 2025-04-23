@@ -83,7 +83,7 @@ export default function BookingRequest() {
       // Focus the first field with an error
       const firstError = Object.keys(form.formState.errors)[0];
       if (firstError) {
-        form.setFocus(firstError as any);
+        form.setFocus(firstError as keyof z.infer<typeof bookingSchema>);
       }
       
       // Show error toast
@@ -175,7 +175,7 @@ export default function BookingRequest() {
               </CardHeader>
               <CardContent className="px-0 pb-0">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" role="form">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
                       control={form.control}
                       name="projectTitle"
