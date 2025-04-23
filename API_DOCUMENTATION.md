@@ -1,6 +1,8 @@
 # ZeroVacancy API Documentation
 
-This document outlines the API endpoints that the ZeroVacancy frontend will integrate with in Phase 2. For Phase 1, the frontend uses mock data from the `/src/lib/mockData` directory.
+This document outlines the API endpoints that the ZeroVacancy frontend will integrate with. API route stubs are implemented in `src/app.ts` for local integration tests.
+See the OpenAPI spec stubs under `docs/api/` (creators.yaml, projects.yaml, applications.yaml) for the base contracts used by the frontend.
+For Phase 1, the frontend otherwise uses mock data from the `/src/lib/mockData` directory.
 
 ## API Architecture
 

@@ -41,7 +41,9 @@ For development purposes, you can use these test accounts:
 - `/src/components` - Reusable UI components
 - `/src/lib` - Utilities, API client, and type definitions
 - `/src/lib/auth` - Authentication context and helpers
-- `/src/pages` - Page-level components
+ - `/src/pages` - Page-level components
+ - `/src/app.ts` - Express-based local API route stubs for integration testing
+ - `/docs/api/` - OpenAPI spec stubs for Creator, Project, and Application APIs
 
 ## Tech Stack
 
