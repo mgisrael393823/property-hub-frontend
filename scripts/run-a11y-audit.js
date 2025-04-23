@@ -49,7 +49,7 @@ async function runAccessibilityAudit() {
   // Check if server is running
   try {
     console.log(`${colors.blue}Checking if development server is running...${colors.reset}`);
-    execSync('curl -s http://localhost:5173 > /dev/null');
+    execSync('curl -s http://localhost:8080 > /dev/null');
     console.log(`${colors.green}✓ Development server is running${colors.reset}\n`);
   } catch (error) {
     console.log(`${colors.red}✗ Development server is not running${colors.reset}`);
@@ -126,7 +126,7 @@ async function runLighthouseChecks() {
     try {
       const outputPath = path.join(reportsDir, `lighthouse-${page.name.toLowerCase().replace(/\s+/g, '-')}.json`);
       execSync(
-        `npx lighthouse http://localhost:5173${page.path} --only-categories=accessibility --output=json --output-path=${outputPath} --quiet`,
+        `npx lighthouse http://localhost:8080${page.path} --only-categories=accessibility --output=json --output-path=${outputPath} --quiet`,
         { stdio: 'inherit' }
       );
       console.log(`${colors.green}✓ Lighthouse audit for ${page.name} completed${colors.reset}`);
@@ -147,7 +147,7 @@ async function runPa11yChecks() {
     try {
       const outputPath = path.join(reportsDir, `pa11y-${page.name.toLowerCase().replace(/\s+/g, '-')}.json`);
       execSync(
-        `npx pa11y http://localhost:5173${page.path} --reporter json > ${outputPath}`,
+        `npx pa11y http://localhost:8080${page.path} --reporter json > ${outputPath}`,
         { stdio: 'inherit' }
       );
       console.log(`${colors.green}✓ Pa11y check for ${page.name} completed${colors.reset}`);

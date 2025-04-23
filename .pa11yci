@@ -8,11 +8,11 @@
     }
   },
   "urls": [
-    "http://localhost:5173/",
-    "http://localhost:5173/search",
-    "http://localhost:5173/creator/1",
-    "http://localhost:5173/creator-dashboard",
-    "http://localhost:5173/manager-dashboard",
-    "http://localhost:5173/projects/new"
+    "http://localhost:8080/",
+    "http://localhost:8080/search",
+    "http://localhost:8080/creator/1",
+    "http://localhost:8080/creator-dashboard",
+    "http://localhost:8080/manager-dashboard",
+    "http://localhost:8080/projects/new"
   ]
 }
