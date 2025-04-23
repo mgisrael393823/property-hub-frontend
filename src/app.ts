@@ -1,5 +1,5 @@
 import express from 'express';
-import { MOCK_PROJECTS } from './lib/mockData';
+import { MOCK_PROJECTS, MOCK_APPLICANTS } from './lib/mockData';
 const app = express();
 
 // -- API route stubs for integration tests --
@@ -20,7 +20,18 @@ app.get('/projects/:id', (req, res) => {
   }
 });
 
-app.get('/applications', (_req, res) => res.json([]));
-app.get('/applications/:id', (_req, res) => res.sendStatus(404));
+// Application stubs
+app.get('/applications', (_req, res) => {
+  res.json(MOCK_APPLICANTS);
+});
+
+app.get('/applications/:id', (req, res) => {
+  const item = MOCK_APPLICANTS.find(a => a.id === req.params.id);
+  if (item) {
+    res.json(item);
+  } else {
+    res.sendStatus(404);
+  }
+});
 
 export default app;

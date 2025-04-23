@@ -7,31 +7,9 @@ import { useMobile } from "@/hooks/use-mobile";
 import { useAsyncData } from "@/hooks/use-async-data";
 import { ProjectCardSkeleton } from "@/components/skeletons";
 import { EmptyState } from "@/components/ui/empty-state";
+import { api } from "@/lib/api";
 
-// Mock data for projects
-const projects = [
-  {
-    id: 1,
-    title: "Office Space Photography",
-    creator: "Sarah Johnson",
-    date: "2025-04-25",
-    status: "pending"
-  },
-  {
-    id: 2,
-    title: "Apartment Virtual Tour",
-    creator: "Mike Williams",
-    date: "2025-04-28",
-    status: "in-progress"
-  },
-  {
-    id: 3,
-    title: "Property Listing Photos",
-    creator: "Alex Chen",
-    date: "2025-04-30",
-    status: "delivered"
-  }
-];
+// Removed static mock data
 
 const statusStyles = {
   pending: "bg-yellow-100 text-yellow-800",
@@ -42,16 +20,8 @@ const statusStyles = {
 const ProjectsTab = () => {
   const isMobile = useMobile('sm');
   
-  // Simulated delay for loading demonstration (remove in production)
-  const simulateDelay = () => new Promise(resolve => setTimeout(resolve, 1500));
-  
-  // Fetch projects data
-  const fetchProjects = async () => {
-    await simulateDelay(); // Remove in production
-    
-    // In a real app, this would be: return api.projects.getAll();
-    return projects;
-  };
+  // Fetch projects data using API client
+  const fetchProjects = () => api.projects.list();
   
   // Use our custom hook to handle loading, error states and data fetching
   const { data, loading, error, refetch } = useAsyncData(

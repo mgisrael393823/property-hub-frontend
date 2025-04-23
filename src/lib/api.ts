@@ -408,26 +408,12 @@ export const api = {
   
   // Project endpoints
   projects: {
-    getAll: () => 
-      apiRequest<ApiResponse<PaginatedResponse<any>>>('/projects'),
-    
-    getById: (id: string) => 
-      apiRequest<ApiResponse<any>>(`/projects/${id}`),
-    
-    create: (data: any) => 
-      apiRequest<ApiResponse<any>>('/projects', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }),
-    
-    update: (id: string, data: any) => 
-      apiRequest<ApiResponse<any>>(`/projects/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      }),
-    
-    getApplications: (projectId: string) => 
-      apiRequest<ApiResponse<PaginatedResponse<any>>>(`/projects/${projectId}/applications`),
+    list: () =>
+      fetch(`${import.meta.env.VITE_API_URL}/projects`).then(res => res.json()),
+    getById: (id: string) =>
+      fetch(`${import.meta.env.VITE_API_URL}/projects/${id}`).then(res =>
+        res.ok ? res.json() : Promise.reject(res.status)
+      ),
   },
   
   // Application endpoints
