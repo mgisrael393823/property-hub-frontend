@@ -62,10 +62,12 @@ describe('CreatorCard', () => {
     
     renderWithProviders(<CreatorCard {...propsWithoutSamples} />);
     
-    // Should render the avatar image in the top section
-    const mainImage = screen.getByAltText('Jane Smith');
-    expect(mainImage).toBeInTheDocument();
-    expect(mainImage.closest('.col-span-2')).toBeInTheDocument(); // Should be a larger image
+    // Should render the heading and main image
+    const heading = screen.getByRole('heading', { name: /Jane Smith/i });
+    expect(heading).toBeInTheDocument();
+    const images = screen.getAllByRole('img', { name: /Jane Smith/i });
+    const mainPhoto = images.find(img => img.closest('.col-span-2'));
+    expect(mainPhoto).toBeInTheDocument();
   });
   
   it('renders correctly without verified badge', () => {

@@ -67,16 +67,40 @@ export default function BookingRequest() {
       services: [],
       notes: '',
     },
-    mode: 'onChange', // Validate on change for immediate user feedback
+    mode: 'all', // Validate on all events (change, blur, submit)
+    criteriaMode: 'all', // Show all validation errors
   });
 
   // Handle form submission
-  const onSubmit = async (data: z.infer<typeof bookingSchema>) => {
+  const onSubmit = async (values: z.infer<typeof bookingSchema>, event?: React.BaseSyntheticEvent) => {
+    event?.preventDefault(); // Prevent default form submission
+    
+    // Validate all fields and mark them as touched to show errors
+    await form.trigger();
+    
+    // Check if form is valid
+    if (!form.formState.isValid) {
+      // Focus the first field with an error
+      const firstError = Object.keys(form.formState.errors)[0];
+      if (firstError) {
+        form.setFocus(firstError as any);
+      }
+      
+      // Show error toast
+      toast({
+        title: "Please fix form errors",
+        description: "Some required fields need your attention.",
+        variant: "destructive",
+      });
+      
+      return; // Stop submission
+    }
+    
     setIsSubmitting(true);
     
     try {
       // In a real app, this would submit to an API
-      console.log('Form data:', data);
+      console.log('Form data:', values);
       
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -96,6 +120,9 @@ export default function BookingRequest() {
         description: "There was a problem submitting your booking request. Please try again.",
         variant: "destructive",
       });
+      
+      // Revalidate the form to ensure errors are shown
+      form.trigger();
     } finally {
       setIsSubmitting(false);
     }
@@ -148,7 +175,7 @@ export default function BookingRequest() {
               </CardHeader>
               <CardContent className="px-0 pb-0">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" role="form">
                     <FormField
                       control={form.control}
                       name="projectTitle"
@@ -156,12 +183,21 @@ export default function BookingRequest() {
                         <FormItem>
                           <FormLabel>Project Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g., Beach House Photography" {...field} />
+                            <Input 
+                              placeholder="e.g., Beach House Photography" 
+                              {...field} 
+                              aria-invalid={!!form.formState.errors.projectTitle}
+                              aria-describedby={form.formState.errors.projectTitle ? "projectTitle-error" : undefined}
+                            />
                           </FormControl>
                           <FormDescription>
                             Give your project a descriptive title
                           </FormDescription>
-                          <FormMessage />
+                          {form.formState.errors.projectTitle && (
+                            <p id="projectTitle-error" className="text-sm font-medium text-destructive">
+                              Project title is required
+                            </p>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -173,12 +209,21 @@ export default function BookingRequest() {
                         <FormItem>
                           <FormLabel>Property Address</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter the full property address" {...field} />
+                            <Input 
+                              placeholder="Enter the full property address" 
+                              {...field} 
+                              aria-invalid={!!form.formState.errors.propertyAddress}
+                              aria-describedby={form.formState.errors.propertyAddress ? "propertyAddress-error" : undefined}
+                            />
                           </FormControl>
                           <FormDescription>
                             Please provide the complete address where the shoot will take place
                           </FormDescription>
-                          <FormMessage />
+                          {form.formState.errors.propertyAddress && (
+                            <p id="propertyAddress-error" className="text-sm font-medium text-destructive">
+                              Please enter a complete address
+                            </p>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -195,6 +240,8 @@ export default function BookingRequest() {
                                 <Button
                                   variant="outline"
                                   className={`w-full justify-start text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                                  aria-invalid={!!form.formState.errors.preferredDate}
+                                  aria-describedby={form.formState.errors.preferredDate ? "preferredDate-error" : undefined}
                                 >
                                   <Calendar className="mr-2 h-4 w-4" />
                                   {field.value ? (
@@ -221,7 +268,11 @@ export default function BookingRequest() {
                           <FormDescription>
                             Select your preferred date for the shoot (must be a future date)
                           </FormDescription>
-                          <FormMessage />
+                          {form.formState.errors.preferredDate && (
+                            <p id="preferredDate-error" className="text-sm font-medium text-destructive">
+                              Please select a date
+                            </p>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -243,36 +294,40 @@ export default function BookingRequest() {
                                 key={service.id}
                                 control={form.control}
                                 name="services"
-                                render={({ field }) => {
-                                  return (
-                                    <FormItem
-                                      key={service.id}
-                                      className="flex flex-row items-start space-x-3 space-y-0"
-                                    >
-                                      <FormControl>
-                                        <Checkbox
-                                          checked={field.value?.includes(service.id)}
-                                          onCheckedChange={(checked) => {
-                                            return checked
-                                              ? field.onChange([...field.value, service.id])
-                                              : field.onChange(
-                                                  field.value?.filter(
-                                                    (value) => value !== service.id
-                                                  )
+                                render={({ field }) => (
+                                  <FormItem
+                                    key={service.id}
+                                    className="flex flex-row items-start space-x-3 space-y-0"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(service.id)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([...field.value, service.id])
+                                            : field.onChange(
+                                                field.value?.filter(
+                                                  (value) => value !== service.id
                                                 )
-                                          }}
-                                        />
-                                      </FormControl>
-                                      <FormLabel className="font-normal">
-                                        {service.label}
-                                      </FormLabel>
-                                    </FormItem>
-                                  )
-                                }}
+                                              )
+                                        }}
+                                        aria-invalid={!!form.formState.errors.services}
+                                        aria-describedby={form.formState.errors.services ? "services-error" : undefined}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      {service.label}
+                                    </FormLabel>
+                                  </FormItem>
+                                )}
                               />
                             ))}
                           </div>
-                          <FormMessage className="mt-2" />
+                          {form.formState.errors.services && (
+                            <p id="services-error" className="text-sm font-medium text-destructive mt-2">
+                              Please select at least one service
+                            </p>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -288,12 +343,14 @@ export default function BookingRequest() {
                               placeholder="Any specific requirements or details about the project?"
                               className="resize-none min-h-[120px]"
                               {...field}
+                              aria-invalid={!!form.formState.errors.notes}
+                              aria-describedby={form.formState.errors.notes ? "notes-error" : undefined}
                             />
                           </FormControl>
                           <FormDescription>
                             Share any specific requirements or extra details the creator should know
                           </FormDescription>
-                          <FormMessage />
+                          <FormMessage id="notes-error" />
                         </FormItem>
                       )}
                     />
@@ -317,7 +374,17 @@ export default function BookingRequest() {
                       <Alert variant="destructive" className="mt-4">
                         <AlertTitle>Form Incomplete</AlertTitle>
                         <AlertDescription>
-                          Please fix the highlighted errors before submitting.
+                          <ul className="list-disc pl-5">
+                            {Object.entries(form.formState.errors).map(([field, error]) => (
+                              <li key={field}>
+                                {field === 'projectTitle' && 'Project title is required'}
+                                {field === 'propertyAddress' && 'Property address is required'}
+                                {field === 'preferredDate' && 'Please select a date'}
+                                {field === 'services' && 'Please select at least one service'}
+                                {field === 'notes' && 'Additional information is required'}
+                              </li>
+                            ))}
+                          </ul>
                         </AlertDescription>
                       </Alert>
                     )}

@@ -197,7 +197,7 @@ const BasicInfoStep = ({ form }: { form: any }) => {
       </div>
 
       <Form {...form}>
-        <form className="space-y-4">
+        <form className="space-y-4" role="form">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}

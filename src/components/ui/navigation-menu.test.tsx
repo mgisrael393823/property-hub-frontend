@@ -114,6 +114,7 @@ describe('NavigationMenu', () => {
               className="test-link-class"
               target="_blank"
               aria-label="Test Link"
+              data-testid="nav-menu-link"
             >
               Link Text
             </NavigationMenuLink>
@@ -122,11 +123,13 @@ describe('NavigationMenu', () => {
       </NavigationMenu>
     );
 
-    // Check for the link with correct attributes
-    const link = screen.getByRole('link', { name: 'Link Text' });
+    // Check for the link with correct attributes using data-testid
+    // Radix UI may change how roles are applied, so this is more reliable
+    const link = screen.getByTestId('nav-menu-link');
     expect(link).toHaveAttribute('href', '#test-link');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('aria-label', 'Test Link');
     expect(link).toHaveClass('test-link-class');
+    expect(link).toHaveTextContent('Link Text');
   });
 });

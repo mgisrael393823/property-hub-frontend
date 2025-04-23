@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import {
   Dialog,
   DialogTrigger,
@@ -75,8 +75,11 @@ describe('Dialog', () => {
       </Dialog>
     );
     
-    // Open the dialog
-    fireEvent.click(screen.getByText('Open'));
+    // Open the dialog via role
+    const openBtn = screen.getByRole('button', { name: 'Open' });
+    act(() => {
+      fireEvent.click(openBtn);
+    });
     
     // Check for custom classes
     expect(document.querySelector('.custom-content-class')).toBeInTheDocument();
@@ -128,8 +131,11 @@ describe('Dialog', () => {
       </Dialog>
     );
     
-    // Open the dialog
-    fireEvent.click(screen.getByText('Open'));
+    // Open the dialog via role
+    const openBtnFooter = screen.getByRole('button', { name: 'Open' });
+    act(() => {
+      fireEvent.click(openBtnFooter);
+    });
     
     // Check footer classes
     const footer = document.querySelector('.flex-col-reverse');

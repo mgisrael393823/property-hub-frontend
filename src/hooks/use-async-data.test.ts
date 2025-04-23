@@ -64,10 +64,8 @@ describe('useAsyncData', () => {
       useAsyncData(asyncFn, { onError, errorFallback, runImmediately: false })
     );
     
-    // Trigger fetch manually
-    await act(async () => {
-      result.current.refetch();
-    });
+    // Trigger fetch manually and expect error
+    await expect(result.current.refetch()).rejects.toThrow('Test error');
     
     // Wait for the async function to reject
     await waitFor(() => {
