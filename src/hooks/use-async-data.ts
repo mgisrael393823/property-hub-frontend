@@ -7,6 +7,7 @@ interface UseAsyncDataOptions<T> {
   onSuccess?: (data: T) => void;
   onError?: (error: unknown) => void;
   dependencies?: any[];
+  runImmediately?: boolean;
 }
 
 /**
@@ -29,6 +30,7 @@ export function useAsyncData<T>(
     onSuccess,
     onError,
     dependencies = [],
+    runImmediately = true,
   } = options;
 
   const [data, setData] = useState<T | undefined>(initialData);
@@ -71,10 +73,14 @@ export function useAsyncData<T>(
   }, [asyncFn, errorFallback, onSuccess, onError]);
 
   useEffect(() => {
-    fetchData().catch(e => {
-      // Error is already handled in fetchData
-      // This catch is just to prevent unhandled rejection warnings
-    });
+    if (runImmediately) {
+      fetchData().catch(e => {
+        // Error is already handled in fetchData
+        // This catch is just to prevent unhandled rejection warnings
+      });
+    } else {
+      setLoading(false); // Initialize as not loading when not running immediately
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...dependencies]);
 

@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Creator Profiles API
+  version: '1.0.0'
+paths:
+  /creators:
+    get:
+      summary: Retrieve list of creators
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Creator'
+  /creators/{id}:
+    get:
+      summary: Retrieve creator by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creator'
+        '404':
+          description: Creator not found
+components:
+  schemas:
+    Creator:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name

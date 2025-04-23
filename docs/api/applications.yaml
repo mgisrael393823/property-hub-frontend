@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  title: Application System API
+  version: '1.0.0'
+paths:
+  /applications:
+    get:
+      summary: Retrieve list of applications
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+  /applications/{id}:
+    get:
+      summary: Retrieve application by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          description: Application not found
+components:
+  schemas:
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        creatorId:
+          type: string
+        projectId:
+          type: string
+      required:
+        - id
+        - creatorId
+        - projectId

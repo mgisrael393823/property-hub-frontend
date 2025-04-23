@@ -88,7 +88,11 @@
 
 ## Next Steps
 
-1. Implement Modal and Dialog component tests
-2. Implement CreatorProfile and Search page tests 
-3. Set up coverage reporting
-4. Begin integration tests for key user flows
+1. ✅ Implement Dialog component tests - DONE
+2. ✅ Implement Search page tests - DONE  
+3. ✅ Implement SearchViewToggle tests - DONE
+4. ✅ Implement SearchFilters tests - DONE
+5. ✅ Implement Sheet component tests (referred to as "Modal" in plan) - DONE
+6. ✅ Implement CreatorProfile page tests - DONE
+7. Set up coverage reporting
+8. Begin integration tests for key user flows
