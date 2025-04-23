@@ -17,8 +17,10 @@ describe('CreatorOnboarding', () => {
     vi.clearAllMocks();
   });
 
-  it('renders the BasicInfoStep by default', () => {
-    renderWithProviders(<CreatorOnboarding />);
+  it('renders the BasicInfoStep by default', async () => {
+    await act(async () => {
+      renderWithProviders(<CreatorOnboarding />);
+    });
     
     // Verify that the first step is rendered
     expect(screen.getByText('Basic Information')).toBeInTheDocument();
@@ -34,7 +36,9 @@ describe('CreatorOnboarding', () => {
   });
 
   it('validates the BasicInfoStep form fields', async () => {
-    const { user } = renderWithProviders(<CreatorOnboarding />);
+    await act(async () => {
+      renderWithProviders(<CreatorOnboarding />);
+    });
     
     // Get form fields
     const firstNameInput = screen.getByLabelText('First Name');
@@ -45,21 +49,19 @@ describe('CreatorOnboarding', () => {
     const bioInput = screen.getByLabelText('Bio');
     
     // Enter invalid data
-    await user.type(firstNameInput, 'J'); // Too short
-    await user.type(emailInput, 'invalid-email'); // Invalid email format
-    await user.type(bioInput, 'Short'); // Too short
+    await act(async () => {
+      await fireEvent.change(firstNameInput, { target: { value: 'J' } }); // Too short
+      await fireEvent.change(emailInput, { target: { value: 'invalid-email' } }); // Invalid email format
+      await fireEvent.change(bioInput, { target: { value: 'Short' } }); // Too short
+    });
     
-    // Submit the form or trigger validation by changing focus
-    await user.tab();
-    
-    // Since the form might not have an explicit role, find it differently
-    const formElement = screen.getByText('First Name').closest('form');
-    if (formElement) {
-      fireEvent.submit(formElement);
-    } else {
-      // If we can't find the form, just trigger validation by changing focus
-      await user.tab();
-    }
+    // Submit the form to trigger validation
+    await act(async () => {
+      const formElement = screen.getByText('First Name').closest('form');
+      if (formElement) {
+        fireEvent.submit(formElement);
+      }
+    });
     
     // Check for error messages
     await waitFor(() => {
@@ -69,16 +71,14 @@ describe('CreatorOnboarding', () => {
     });
     
     // Clear and enter valid data
-    await user.clear(firstNameInput);
-    await user.clear(emailInput);
-    await user.clear(bioInput);
-    
-    await user.type(firstNameInput, 'John');
-    await user.type(lastNameInput, 'Doe');
-    await user.type(emailInput, 'john.doe@example.com');
-    await user.type(phoneInput, '1234567890');
-    await user.type(locationInput, 'New York, NY');
-    await user.type(bioInput, 'I am a professional photographer with 5 years of experience.');
+    await act(async () => {
+      await fireEvent.change(firstNameInput, { target: { value: 'John' } });
+      await fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
+      await fireEvent.change(emailInput, { target: { value: 'john.doe@example.com' } });
+      await fireEvent.change(phoneInput, { target: { value: '1234567890' } });
+      await fireEvent.change(locationInput, { target: { value: 'New York, NY' } });
+      await fireEvent.change(bioInput, { target: { value: 'I am a professional photographer with 5 years of experience.' } });
+    });
     
     // Verify error messages are gone
     await waitFor(() => {
