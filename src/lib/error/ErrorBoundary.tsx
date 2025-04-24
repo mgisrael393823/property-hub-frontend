@@ -5,7 +5,7 @@ interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
-  resetOnChange?: any[];
+  resetOnChange?: unknown[];
 }
 
 interface ErrorBoundaryState {

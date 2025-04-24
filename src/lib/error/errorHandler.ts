@@ -19,13 +19,13 @@ export enum ErrorType {
 export class AppError extends Error {
   type: ErrorType;
   status?: number;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
 
   constructor(
     message: string,
     type: ErrorType = ErrorType.UNKNOWN,
     status?: number,
-    details?: Record<string, any>
+    details?: Record<string, unknown>
   ) {
     super(message);
     this.name = 'AppError';
@@ -37,7 +37,7 @@ export class AppError extends Error {
   /**
    * Factory method to create an API error
    */
-  static api(message: string, status?: number, details?: Record<string, any>): AppError {
+  static api(message: string, status?: number, details?: Record<string, unknown>): AppError {
     return new AppError(message, ErrorType.API, status, details);
   }
 
@@ -58,7 +58,7 @@ export class AppError extends Error {
   /**
    * Factory method to create a validation error
    */
-  static validation(message: string, details?: Record<string, any>): AppError {
+  static validation(message: string, details?: Record<string, unknown>): AppError {
     return new AppError(message, ErrorType.VALIDATION, 400, details);
   }
 
@@ -85,7 +85,7 @@ export function handleError(error: unknown, fallbackMessage: string = 'An unexpe
 
   // Default error message and variant
   let message = fallbackMessage;
-  let variant: 'default' | 'destructive' = 'destructive';
+  const variant: 'default' | 'destructive' = 'destructive';
 
   // Handle AppError instances
   if (error instanceof AppError) {

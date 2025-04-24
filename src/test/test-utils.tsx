@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 
 // Interface for wrapped render options
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
@@ -43,7 +44,7 @@ export function renderWithProviders(
 /**
  * Helper function to create a mock response for fetch
  */
-export function createMockResponse(data: any, status = 200) {
+export function createMockResponse(data: unknown, status = 200) {
   return {
     ok: status >= 200 && status < 300,
     status,
@@ -55,7 +56,7 @@ export function createMockResponse(data: any, status = 200) {
 /**
  * Mocks the fetch function for testing API calls
  */
-export function setupFetchMock(responseData: any, status = 200) {
+export function setupFetchMock(responseData: unknown, status = 200) {
   global.fetch = vi.fn().mockResolvedValue(createMockResponse(responseData, status));
 }
 
@@ -63,8 +64,8 @@ export function setupFetchMock(responseData: any, status = 200) {
  * Restore the fetch mock
  */
 export function clearFetchMock() {
-  if (global.fetch && typeof (global.fetch as any).mockRestore === 'function') {
-    (global.fetch as any).mockRestore();
+  if (global.fetch && typeof vi.mocked(global.fetch).mockRestore === 'function') {
+    vi.mocked(global.fetch).mockRestore();
   }
 }
 

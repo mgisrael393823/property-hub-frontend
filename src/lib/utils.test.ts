@@ -7,7 +7,7 @@ describe('cn utility function', () => {
     expect(cn('foo', 'bar')).toBe('foo bar');
     
     // With conditional classes
-    expect(cn('foo', true && 'bar', false && 'baz')).toBe('foo bar');
+    expect(cn('foo', 'bar', false && 'baz')).toBe('foo bar');
     
     // With null or undefined values
     expect(cn('foo', null, undefined, 'bar')).toBe('foo bar');
