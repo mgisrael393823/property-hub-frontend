@@ -175,7 +175,12 @@ export default function BookingRequest() {
               </CardHeader>
               <CardContent className="px-0 pb-0">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form 
+                    onSubmit={form.handleSubmit(onSubmit)} 
+                    className="space-y-6"
+                    role="form"
+                    aria-label="Booking Request Form"
+                  >
                     <FormField
                       control={form.control}
                       name="projectTitle"
