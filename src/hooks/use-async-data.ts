@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, DependencyList } from 'react';
 import { handleError } from '@/lib/error/errorHandler';
 
 interface UseAsyncDataOptions<T> {
@@ -6,7 +6,7 @@ interface UseAsyncDataOptions<T> {
   errorFallback?: T;
   onSuccess?: (data: T) => void;
   onError?: (error: unknown) => void;
-  dependencies?: any[];
+  dependencies?: React.DependencyList;
   runImmediately?: boolean;
 }
 

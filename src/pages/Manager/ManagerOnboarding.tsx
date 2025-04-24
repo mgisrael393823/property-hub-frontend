@@ -851,7 +851,7 @@ const PaymentMethodStep = ({ form }: { form: any }) => {
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel className="text-sm font-normal">
-                        I authorize ZeroVacancy to charge my payment method for bookings and accept the <a href="#" className="text-brand-purple hover:underline">Terms of Service</a> and <a href="#" className="text-brand-purple hover:underline">Privacy Policy</a>
+                        I authorize ZeroVacancy to charge my payment method for bookings and accept the <a href="#" className="text-brand-purple hover:underline" aria-label="Read Terms of Service">Terms of Service</a> and <a href="#" className="text-brand-purple hover:underline" aria-label="Read Privacy Policy">Privacy Policy</a>
                       </FormLabel>
                       <FormMessage />
                     </div>

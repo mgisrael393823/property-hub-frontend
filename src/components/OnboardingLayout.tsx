@@ -1,6 +1,6 @@
 
 import React, { useState, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Stepper } from "@/components/ui/stepper";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -27,11 +27,13 @@ const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
   children,
   onSubmit,
 }) => {
+  const navigate = useNavigate();
+  
   const handleNext = () => {
     if (isLastStep) {
       onSubmit?.();
       // Redirect to dashboard
-      window.location.href = type === "creator" ? "/creator-dashboard" : "/manager-dashboard";
+      navigate(type === "creator" ? "/creator-dashboard" : "/manager-dashboard");
       return;
     }
     

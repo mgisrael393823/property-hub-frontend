@@ -1,10 +1,12 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import NotificationsDropdown from './notifications/NotificationsDropdown';
 
 const Navigation = () => {
+  const navigate = useNavigate();
+  
   return (
     <nav className="w-full py-4 px-6 bg-white sticky top-0 z-50 border-b border-border shadow-sm">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -27,14 +29,14 @@ const Navigation = () => {
               <Button 
                 variant="outline"
                 className="border-brand-primary text-brand-primary hover:bg-brand-secondary rounded-full px-5 py-2.5 text-sm font-semibold"
-                onClick={() => window.location.href = '/onboarding/creator'}
+                onClick={() => navigate('/onboarding/creator')}
               >
                 Join as Creator
               </Button>
               <Button 
                 variant="default"
                 className="bg-brand-primary hover:bg-brand-primary/90 text-white rounded-full px-5 py-2.5 text-sm font-semibold"
-                onClick={() => window.location.href = '/onboarding/manager'}
+                onClick={() => navigate('/onboarding/manager')}
               >
                 Post a Project
               </Button>

@@ -73,7 +73,7 @@ export interface AccessibleCardProps {
   /**
    * Additional props to pass to the card
    */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const AccessibleCard = ({
@@ -101,21 +101,6 @@ export const AccessibleCard = ({
   // Example of handling keyboard navigation within the card
   const { trapFocus } = useA11yNavigation();
   
-  // Handler for card click
-  const handleCardClick = () => {
-    if (onClick) {
-      onClick();
-    }
-  };
-  
-  // Handler for keyboard events on the card
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      handleCardClick();
-    }
-  };
-  
   // Determine what to use for aria-labelledby
   const ariaLabelledByValue = ariaLabelledBy || 
     (description ? `${titleId} ${descriptionId}` : titleId);
@@ -127,59 +112,106 @@ export const AccessibleCard = ({
       onKeyDown={trapFocus(cardRef)}
       {...props}
     >
-      {/* Interactive wrapper only if onClick is provided */}
-      <div
-        role={onClick ? "button" : undefined}
-        tabIndex={onClick ? 0 : undefined}
-        onClick={onClick ? handleCardClick : undefined}
-        onKeyDown={onClick ? handleKeyDown : undefined}
-        aria-labelledby={onClick ? ariaLabelledByValue : undefined}
-        className={onClick ? "cursor-pointer" : ""}
-      >
-        {/* Image with appropriate alt text */}
-        <div className="relative pt-[70%] overflow-hidden bg-gray-100">
-          <img
-            src={imageUrl}
-            alt={imageAlt}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </div>
-        
-        <CardContent className="p-4">
-          {/* Title with ID for aria-labelledby */}
-          <h3 
-            id={titleId}
-            className="font-medium text-lg text-gray-900 mb-1"
-          >
-            {title}
-          </h3>
-          
-          {/* Description with ID for aria-labelledby */}
-          {description && (
-            <p 
-              id={descriptionId}
-              className="text-sm text-gray-500 mb-3"
-            >
-              {description}
-            </p>
-          )}
-          
-          {/* Tags with sufficient color contrast */}
-          {tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-3">
-              {tags.map((tag) => (
-                <Badge 
-                  key={tag} 
-                  variant="secondary"
-                  className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-md"
-                >
-                  {tag}
-                </Badge>
-              ))}
+      {onClick ? (
+        <button
+          type="button"
+          onClick={onClick}
+          aria-labelledby={ariaLabelledByValue}
+          className="w-full text-left cursor-pointer bg-transparent border-0 p-0 m-0"
+        >
+          <CardContent className="p-0">
+            {/* Image with appropriate alt text */}
+            <div className="relative pt-[70%] overflow-hidden bg-gray-100">
+              <img
+                src={imageUrl}
+                alt={imageAlt}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
             </div>
-          )}
+            
+            <div className="p-4">
+              {/* Title with ID for aria-labelledby */}
+              <h3 
+                id={titleId}
+                className="font-medium text-lg text-gray-900 mb-1"
+              >
+                {title}
+              </h3>
+              
+              {/* Description with ID for aria-labelledby */}
+              {description && (
+                <p 
+                  id={descriptionId}
+                  className="text-sm text-gray-500 mb-3"
+                >
+                  {description}
+                </p>
+              )}
+              
+              {/* Tags with sufficient color contrast */}
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {tags.map((tag) => (
+                    <Badge 
+                      key={tag} 
+                      variant="secondary"
+                      className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-md"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </button>
+      ) : (
+        <CardContent className="p-0">
+          {/* Image with appropriate alt text */}
+          <div className="relative pt-[70%] overflow-hidden bg-gray-100">
+            <img
+              src={imageUrl}
+              alt={imageAlt}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+          
+          <div className="p-4">
+            {/* Title with ID for aria-labelledby */}
+            <h3 
+              id={titleId}
+              className="font-medium text-lg text-gray-900 mb-1"
+            >
+              {title}
+            </h3>
+            
+            {/* Description with ID for aria-labelledby */}
+            {description && (
+              <p 
+                id={descriptionId}
+                className="text-sm text-gray-500 mb-3"
+              >
+                {description}
+              </p>
+            )}
+            
+            {/* Tags with sufficient color contrast */}
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {tags.map((tag) => (
+                  <Badge 
+                    key={tag} 
+                    variant="secondary"
+                    className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-md"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
         </CardContent>
-      </div>
+      )}
       
       {/* Action buttons with proper labels */}
       <CardFooter className="flex justify-between p-4 pt-0 gap-2">

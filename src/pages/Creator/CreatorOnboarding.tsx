@@ -687,7 +687,7 @@ const VerificationStep = ({ form }: { form: any }) => {
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel className="font-normal">
-                        I accept the <a href="#" className="text-brand-purple hover:underline">Terms of Service</a> and <a href="#" className="text-brand-purple hover:underline">Privacy Policy</a>
+                        I accept the <a href="#" className="text-brand-purple hover:underline" aria-label="Read Terms of Service">Terms of Service</a> and <a href="#" className="text-brand-purple hover:underline" aria-label="Read Privacy Policy">Privacy Policy</a>
                       </FormLabel>
                       <FormMessage />
                     </div>

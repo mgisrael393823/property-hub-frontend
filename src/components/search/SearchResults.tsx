@@ -6,6 +6,17 @@ import { useMobile } from "@/hooks/use-mobile";
 import { SearchResultsSkeleton } from "@/components/skeletons";
 import { useAsyncData } from "@/hooks/use-async-data";
 import { api } from "@/lib/api";
+import { Creator } from "@/lib/types";
+
+// Define a ServiceItem type for the service cards
+interface ServiceItem {
+  id: string;
+  title: string;
+  coverImage: string;
+  availableCreators: number;
+  tags: string[];
+}
+
 import {
   Select,
   SelectContent,
@@ -213,11 +224,11 @@ export function SearchResults({ view }: SearchResultsProps) {
       {itemCount > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {view === "creators" ? (
-            items.map((creator: any) => (
+            items.map((creator: Creator) => (
               <CreatorCard key={creator.id} {...creator} />
             ))
           ) : (
-            items.map((service: any) => (
+            items.map((service: ServiceItem) => (
               <ServiceCard
                 key={service.id}
                 {...service}
