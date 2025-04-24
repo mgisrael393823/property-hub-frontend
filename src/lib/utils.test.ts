@@ -37,12 +37,14 @@ describe('cn utility function', () => {
     const isDanger = false;
     const isLarge = true;
     
+    // Since isPrimary is always true in this test, we need to make the test more meaningful
+    // by directly providing the string instead of using a tautological condition
     const result = cn(
       'btn',
-      isPrimary && 'btn-primary',
+      'btn-primary', // Direct value instead of isPrimary && 'btn-primary' since isPrimary is true
       isDanger && 'btn-danger',
       isLarge ? 'btn-lg' : 'btn-md',
-      isPrimary && isDanger && 'btn-primary-danger'
+      isDanger && 'btn-primary-danger' // Only depends on isDanger since isPrimary is always true
     );
     
     expect(result).toBe('btn btn-primary btn-lg');
