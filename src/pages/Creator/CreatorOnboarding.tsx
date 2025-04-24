@@ -343,13 +343,15 @@ const PortfolioStep = ({ form }: { form: PortfolioFormType }) => {
                   </div>
                 </div>
               ))}
-              <div 
+              <button 
+                type="button"
                 onClick={handleImageUpload}
                 className="aspect-square bg-gray-50 rounded-md border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
+                aria-label="Upload new image"
               >
                 <FileImage className="h-8 w-8 text-gray-400 mb-2" />
                 <span className="text-sm text-gray-500">Add Image</span>
-              </div>
+              </button>
             </div>
           </CardContent>
           <CardFooter className="flex justify-between border-t pt-4">
@@ -601,15 +603,18 @@ const AvailabilityStep = ({ form }: { form: AvailabilityFormType }) => {
             <div className="grid grid-cols-7 gap-2 mb-6">
               {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
                 <div key={i} className="text-center">
-                  <div className="mb-2 font-medium">{day}</div>
-                  <div 
+                  <div id={`day-label-${day.toLowerCase()}`} className="mb-2 font-medium">{day}</div>
+                  <button 
+                    type="button"
                     className={`
-                      h-10 flex items-center justify-center rounded-md cursor-pointer
+                      h-10 w-full flex items-center justify-center rounded-md cursor-pointer
                       ${i < 5 ? "bg-brand-purple/10 text-brand-purple" : "bg-gray-100 text-gray-400"}
                     `}
+                    aria-labelledby={`day-label-${day.toLowerCase()}`}
+                    aria-pressed={i < 5}
                   >
                     {i < 5 ? "Available" : "Unavailable"}
-                  </div>
+                  </button>
                 </div>
               ))}
             </div>
@@ -618,8 +623,8 @@ const AvailabilityStep = ({ form }: { form: AvailabilityFormType }) => {
               <h4 className="font-medium mb-3">Working Hours</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
-                  <select className="w-full rounded-md border-gray-300 p-2 text-sm">
+                  <label htmlFor="start-time" className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+                  <select id="start-time" className="w-full rounded-md border-gray-300 p-2 text-sm">
                     {[8, 9, 10, 11, 12, 13, 14].map(hour => (
                       <option key={hour} value={hour}>
                         {hour > 12 ? `${hour - 12}:00 PM` : `${hour}:00 AM`}
@@ -628,8 +633,8 @@ const AvailabilityStep = ({ form }: { form: AvailabilityFormType }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">End Time</label>
-                  <select className="w-full rounded-md border-gray-300 p-2 text-sm">
+                  <label htmlFor="end-time" className="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+                  <select id="end-time" className="w-full rounded-md border-gray-300 p-2 text-sm">
                     {[15, 16, 17, 18, 19, 20].map(hour => (
                       <option key={hour} value={hour}>
                         {hour > 12 ? `${hour - 12}:00 PM` : `${hour}:00 AM`}
@@ -695,7 +700,7 @@ const VerificationStep = ({ form }: { form: VerificationFormType }) => {
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel className="font-normal">
-                        I accept the <a href="#" className="text-brand-purple hover:underline" aria-label="Read Terms of Service">Terms of Service</a> and <a href="#" className="text-brand-purple hover:underline" aria-label="Read Privacy Policy">Privacy Policy</a>
+                        I accept the <button type="button" className="text-brand-purple hover:underline bg-transparent border-0 p-0 m-0 font-normal inline-flex" onClick={() => window.open('/terms', '_blank')} aria-label="Read Terms of Service">Terms of Service</button> and <button type="button" className="text-brand-purple hover:underline bg-transparent border-0 p-0 m-0 font-normal inline-flex" onClick={() => window.open('/privacy', '_blank')} aria-label="Read Privacy Policy">Privacy Policy</button>
                       </FormLabel>
                       <FormMessage />
                     </div>
