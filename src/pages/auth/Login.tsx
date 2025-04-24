@@ -36,7 +36,7 @@ const Login: React.FC = () => {
   const location = useLocation();
   
   // Get the "from" location from state, or default to home
-  const from = (location.state as any)?.from || '/';
+  const from = (location.state as { from?: string })?.from || '/';
   
   // Create form with validation
   const form = useForm<LoginFormValues>({

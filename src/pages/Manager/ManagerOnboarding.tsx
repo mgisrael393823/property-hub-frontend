@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import OnboardingLayout from "@/components/OnboardingLayout";
 import { 
@@ -41,6 +41,14 @@ const managerSteps = [
   "Budget Range",
   "Payment Setup"
 ];
+
+// Form types for each step
+type CompanyInfoFormType = UseFormReturn<z.infer<typeof companyInfoSchema>>;
+type PropertyPortfolioFormType = UseFormReturn<z.infer<typeof propertyPortfolioSchema>>;
+type BrandGuidelinesFormType = UseFormReturn<z.infer<typeof brandGuidelinesSchema>>;
+type ContentTypesFormType = UseFormReturn<z.infer<typeof contentTypesSchema>>;
+type BudgetRangeFormType = UseFormReturn<z.infer<typeof budgetRangeSchema>>;
+type PaymentMethodFormType = UseFormReturn<z.infer<typeof paymentMethodSchema>>;
 
 // Define step forms with Zod
 const companyInfoSchema = z.object({
@@ -198,7 +206,7 @@ const ManagerOnboarding = () => {
 };
 
 // Step 1: Company Info
-const CompanyInfoStep = ({ form }: { form: any }) => {
+const CompanyInfoStep = ({ form }: { form: CompanyInfoFormType }) => {
   return (
     <div className="space-y-6 py-4">
       <div>
@@ -302,7 +310,7 @@ const CompanyInfoStep = ({ form }: { form: any }) => {
 };
 
 // Step 2: Property Portfolio
-const PropertyPortfolioStep = ({ form }: { form: any }) => {
+const PropertyPortfolioStep = ({ form }: { form: PropertyPortfolioFormType }) => {
   const { control, watch } = form;
   const properties = watch("properties");
 
@@ -437,7 +445,7 @@ const PropertyPortfolioStep = ({ form }: { form: any }) => {
 };
 
 // Step 3: Brand Guidelines
-const BrandGuidelinesStep = ({ form }: { form: any }) => {
+const BrandGuidelinesStep = ({ form }: { form: BrandGuidelinesFormType }) => {
   const brandColors = form.watch("brandColors");
 
   const addColor = () => {
@@ -546,7 +554,7 @@ const BrandGuidelinesStep = ({ form }: { form: any }) => {
 };
 
 // Step 4: Content Types
-const ContentTypesStep = ({ form }: { form: any }) => {
+const ContentTypesStep = ({ form }: { form: ContentTypesFormType }) => {
   const { control } = form;
   
   const contentTypeOptions = [
@@ -627,7 +635,7 @@ const ContentTypesStep = ({ form }: { form: any }) => {
 };
 
 // Step 5: Budget Range
-const BudgetRangeStep = ({ form }: { form: any }) => {
+const BudgetRangeStep = ({ form }: { form: BudgetRangeFormType }) => {
   const { control } = form;
   const minBudget = form.watch("minBudget");
   const maxBudget = form.watch("maxBudget");
@@ -753,7 +761,7 @@ const BudgetRangeStep = ({ form }: { form: any }) => {
 };
 
 // Step 6: Payment Method Setup
-const PaymentMethodStep = ({ form }: { form: any }) => {
+const PaymentMethodStep = ({ form }: { form: PaymentMethodFormType }) => {
   const { control } = form;
   
   return (

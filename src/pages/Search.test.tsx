@@ -3,21 +3,40 @@ import { screen, act, waitFor, fireEvent } from '@testing-library/react';
 import { renderWithProviders } from '@/test/test-utils';
 import Search from './Search';
 import * as useMobileHook from '@/hooks/use-mobile';
+import * as React from 'react';
 
 // Mock the drawer component
 vi.mock('@/components/ui/drawer', () => ({
-  Drawer: ({ children, open, onOpenChange }: any) => (
+  Drawer: ({ children, open, onOpenChange }: { 
+    children: React.ReactNode; 
+    open?: boolean; 
+    onOpenChange?: (open: boolean) => void;
+  }) => (
     <div data-testid="mock-drawer" data-open={open}>
       {children}
     </div>
   ),
-  DrawerTrigger: ({ children }: any) => <div data-testid="drawer-trigger">{children}</div>,
-  DrawerContent: ({ children }: any) => <div data-testid="drawer-content">{children}</div>,
-  DrawerHeader: ({ children }: any) => <div data-testid="drawer-header">{children}</div>,
-  DrawerTitle: ({ children }: any) => <div data-testid="drawer-title">{children}</div>,
-  DrawerDescription: ({ children }: any) => <div>{children}</div>,
-  DrawerFooter: ({ children }: any) => <div data-testid="drawer-footer">{children}</div>,
-  DrawerClose: ({ children }: any) => <div data-testid="drawer-close">{children}</div>,
+  DrawerTrigger: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="drawer-trigger">{children}</div>
+  ),
+  DrawerContent: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="drawer-content">{children}</div>
+  ),
+  DrawerHeader: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="drawer-header">{children}</div>
+  ),
+  DrawerTitle: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="drawer-title">{children}</div>
+  ),
+  DrawerDescription: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DrawerFooter: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="drawer-footer">{children}</div>
+  ),
+  DrawerClose: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="drawer-close">{children}</div>
+  ),
 }));
 
 // Mock the navigation component

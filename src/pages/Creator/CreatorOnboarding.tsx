@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import OnboardingLayout from "@/components/OnboardingLayout";
 import { 
@@ -34,6 +34,14 @@ const creatorSteps = [
   "Availability",
   "Verification"
 ];
+
+// Form types for each step
+type BasicInfoFormType = UseFormReturn<z.infer<typeof basicInfoSchema>>;
+type PortfolioFormType = UseFormReturn<z.infer<typeof portfolioSchema>>;
+type ServicesFormType = UseFormReturn<z.infer<typeof servicesSchema>>;
+type EquipmentFormType = UseFormReturn<z.infer<typeof equipmentSchema>>;
+type AvailabilityFormType = UseFormReturn<z.infer<typeof availabilitySchema>>;
+type VerificationFormType = UseFormReturn<z.infer<typeof verificationSchema>>;
 
 // Define step forms with Zod
 const basicInfoSchema = z.object({
@@ -188,7 +196,7 @@ const CreatorOnboarding = () => {
 };
 
 // Step 1: Basic Info
-const BasicInfoStep = ({ form }: { form: any }) => {
+const BasicInfoStep = ({ form }: { form: BasicInfoFormType }) => {
   return (
     <div className="space-y-6 py-4">
       <div>
@@ -294,7 +302,7 @@ const BasicInfoStep = ({ form }: { form: any }) => {
 };
 
 // Step 2: Portfolio
-const PortfolioStep = ({ form }: { form: any }) => {
+const PortfolioStep = ({ form }: { form: PortfolioFormType }) => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const handleImageUpload = () => {
@@ -362,7 +370,7 @@ const PortfolioStep = ({ form }: { form: any }) => {
 };
 
 // Step 3: Services & Pricing
-const ServicesStep = ({ form }: { form: any }) => {
+const ServicesStep = ({ form }: { form: ServicesFormType }) => {
   const { control, watch } = form;
   const services = watch("services");
 
@@ -477,7 +485,7 @@ const ServicesStep = ({ form }: { form: any }) => {
 };
 
 // Step 4: Equipment
-const EquipmentStep = ({ form }: { form: any }) => {
+const EquipmentStep = ({ form }: { form: EquipmentFormType }) => {
   const { control, watch } = form;
   const equipment = watch("equipment");
 
@@ -570,7 +578,7 @@ const EquipmentStep = ({ form }: { form: any }) => {
 };
 
 // Step 5: Availability
-const AvailabilityStep = ({ form }: { form: any }) => {
+const AvailabilityStep = ({ form }: { form: AvailabilityFormType }) => {
   return (
     <div className="space-y-6 py-4">
       <div>
@@ -639,7 +647,7 @@ const AvailabilityStep = ({ form }: { form: any }) => {
 };
 
 // Step 6: Verification
-const VerificationStep = ({ form }: { form: any }) => {
+const VerificationStep = ({ form }: { form: VerificationFormType }) => {
   const { control } = form;
   
   return (
