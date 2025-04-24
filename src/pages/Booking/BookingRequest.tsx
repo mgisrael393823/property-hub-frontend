@@ -178,7 +178,6 @@ export default function BookingRequest() {
                   <form 
                     onSubmit={form.handleSubmit(onSubmit)} 
                     className="space-y-6"
-                    role="form"
                     aria-label="Booking Request Form"
                   >
                     <FormField
