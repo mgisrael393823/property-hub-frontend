@@ -1,6 +1,14 @@
 // API client for ZeroVacancy
 
-import { ApiResponse, PaginatedResponse, User } from './types';
+import { 
+  ApiResponse, 
+  PaginatedResponse, 
+  User, 
+  Creator, 
+  Application, 
+  Booking,
+  CreatorSearchFilters,
+} from './types';
 import { toast } from '@/components/ui/use-toast';
 import { 
   MOCK_CREATORS, 
@@ -151,7 +159,7 @@ async function handleMockRequest<T>(
   await mockDelay();
   
   const method = options.method || 'GET';
-  let mockResponse: any;
+  let mockResponse: unknown;
   
   // Handle authentication endpoints
   if (endpoint === '/auth/login' && method === 'POST') {
@@ -388,19 +396,19 @@ export const api = {
   // Creator endpoints
   creators: {
     getAll: () => 
-      apiRequest<ApiResponse<PaginatedResponse<any>>>('/creators'),
+      apiRequest<ApiResponse<PaginatedResponse<Creator>>>('/creators'),
     
     getById: (id: string) => 
-      apiRequest<ApiResponse<any>>(`/creators/${id}`),
+      apiRequest<ApiResponse<Creator>>(`/creators/${id}`),
     
-    search: (filters: any) => 
-      apiRequest<ApiResponse<PaginatedResponse<any>>>('/creators/search', {
+    search: (filters: CreatorSearchFilters) => 
+      apiRequest<ApiResponse<PaginatedResponse<Creator>>>('/creators/search', {
         method: 'POST',
         body: JSON.stringify(filters),
       }),
     
-    update: (id: string, data: any) => 
-      apiRequest<ApiResponse<any>>(`/creators/${id}`, {
+    update: (id: string, data: Partial<Creator>) => 
+      apiRequest<ApiResponse<Creator>>(`/creators/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       }),
@@ -418,14 +426,14 @@ export const api = {
   
   // Application endpoints
   applications: {
-    create: (data: any) => 
-      apiRequest<ApiResponse<any>>('/applications', {
+    create: (data: Omit<Application, 'id' | 'status' | 'createdAt'>) => 
+      apiRequest<ApiResponse<Application>>('/applications', {
         method: 'POST',
         body: JSON.stringify(data),
       }),
     
-    update: (id: string, data: any) => 
-      apiRequest<ApiResponse<any>>(`/applications/${id}`, {
+    update: (id: string, data: Partial<Application>) => 
+      apiRequest<ApiResponse<Application>>(`/applications/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       }),
@@ -434,19 +442,19 @@ export const api = {
   // Booking endpoints
   bookings: {
     getAll: () => 
-      apiRequest<ApiResponse<PaginatedResponse<any>>>('/bookings'),
+      apiRequest<ApiResponse<PaginatedResponse<Booking>>>('/bookings'),
     
     getById: (id: string) => 
-      apiRequest<ApiResponse<any>>(`/bookings/${id}`),
+      apiRequest<ApiResponse<Booking>>(`/bookings/${id}`),
     
-    create: (data: any) => 
-      apiRequest<ApiResponse<any>>('/bookings', {
+    create: (data: Omit<Booking, 'id' | 'status' | 'createdAt' | 'updatedAt'>) => 
+      apiRequest<ApiResponse<Booking>>('/bookings', {
         method: 'POST',
         body: JSON.stringify(data),
       }),
     
-    update: (id: string, data: any) => 
-      apiRequest<ApiResponse<any>>(`/bookings/${id}`, {
+    update: (id: string, data: Partial<Booking>) => 
+      apiRequest<ApiResponse<Booking>>(`/bookings/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       }),
